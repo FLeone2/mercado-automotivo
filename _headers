@@ -1,5 +1,5 @@
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-6GwM+S0ilj8zrCA+WDqsSkO/j5QoiFFte9niErBkCDU=' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob: data:; frame-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-qPh+a0nku4Dqi6vByN7dNrLw7CFqJLHRyIqdYcd9/bk=' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob: data:; frame-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
   Referrer-Policy: no-referrer
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
@@ -7,5 +7,8 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=()
   Cache-Control: public, max-age=0, must-revalidate
 /data/cubes/*
+  Content-Type: application/gzip
+  Cache-Control: public, max-age=31536000, immutable
+/data/origin-cubes/*
   Content-Type: application/gzip
   Cache-Control: public, max-age=31536000, immutable
