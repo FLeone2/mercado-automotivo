@@ -1,0 +1,21 @@
+/* The shell still registers every legacy leaf for URL/history compatibility.
+   Only its flat visual menu is replaced by the grouped authored navigation. */
+.dashboard-root:has(.am-navigation) .dashboard-tabs-row{display:none}
+.am-app{box-sizing:border-box;min-width:0;padding:24px 28px 40px;margin-top:24px;border-radius:30px;border:1px solid var(--am-glass-edge);background:color-mix(in srgb,var(--surface) 45%,transparent)}
+.am-app::before{inset:0;border-radius:inherit}
+/* Round the paint, never clip the content: popovers and scroll regions stay usable. */
+.am-navigation{min-width:0;margin-bottom:20px}
+.am-navigation-row{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.am-primary-nav,.am-secondary-nav,.am-leaf-nav{display:flex;flex-wrap:wrap;gap:6px;min-width:0}
+.am-primary-nav{flex:1 1 650px}
+.am-nav-link{font:inherit;font-size:13px;font-weight:600;min-height:44px;padding:10px 14px;border:1px solid transparent;border-radius:16px;cursor:pointer;color:var(--secondary);background:transparent}
+.am-nav-link:hover{color:var(--text);background:var(--interaction-hover)}
+.am-nav-link[aria-current=page]{color:var(--text);background:var(--surface-raised);border-color:var(--am-glass-edge);box-shadow:inset 0 1px 0 color-mix(in srgb,var(--surface-raised) 90%,transparent),0 3px 12px color-mix(in srgb,var(--chart-1) 8%,transparent)}
+.am-nav-link:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.am-secondary-nav .am-nav-link{font-size:12px;font-weight:500;border-color:var(--border)}
+.am-leaf-nav{margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
+.am-leaf-nav .am-nav-link{font-size:12px}
+.am-breadcrumb{font-size:11px;color:var(--secondary);margin:16px 4px 0;line-height:1.6}
+@media(max-width:760px){.am-app{padding:18px 16px 28px;margin-top:16px;border-radius:24px}.am-app::before{inset:0}.am-navigation-row{gap:10px}.am-primary-nav{flex-basis:100%}.am-nav-link{padding:10px 12px}.am-secondary-nav{margin-left:0}}
+@media(max-width:440px){.am-app{padding:16px 12px 24px;border-radius:22px}.am-primary-nav{gap:4px}.am-nav-link{font-size:12px;padding:10px}.am-leaf-nav{gap:4px}}
+@media print{.am-navigation{display:none}.am-app{border:0;margin:0;padding:0;background:none}}
