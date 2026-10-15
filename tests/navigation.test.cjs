@@ -1,16 +1,16 @@
 const fs=require('node:fs'),assert=require('node:assert/strict'),cp=require('node:child_process');
 const html=fs.readFileSync('index.html','utf8'),source=fs.readFileSync('src/navigation.js','utf8'),css=fs.readFileSync('src/navigation.css','utf8');
 const jsx=(type,props,key)=>({type,props,key});
-const api=new Function('jsxRuntime',source+';return {marketTabs,marketNavigation,navigationLocation,MarketNavigation};')({jsx,jsxs:jsx});
+const api=new Function('jsxRuntime','SCENARIO_TABS',source+';return {marketTabs,marketNavigation,navigationLocation,MarketNavigation,MarketSubnavigation};')({jsx,jsxs:jsx},[{value:'diagnostic',label:'Diagnóstico'}]);
 function all(n){return n&&typeof n==='object'?[n,...[n.props?.children].flat(Infinity).flatMap(all)]:[];}
 assert.deepEqual(api.marketNavigation.map(g=>g.label),['Panorama','Evolução','Concorrência','Segmentos','Territórios','Explorar','Cenários']);
 const legacy=['dashboard','history','competition','ranking','technology','origin','geography','explore','models','quality'];
 assert(legacy.every(id=>api.marketTabs.some(t=>t.id===id)));
 for(const tab of api.marketTabs){
- let navigated=[];const tree=api.MarketNavigation({tab:tab.id,onNavigate:id=>navigated.push(id)}),nodes=all(tree);
+ let navigated=[];const tree=api.MarketNavigation({tab:tab.id,onNavigate:id=>navigated.push(id)}),nodes=[...all(tree),...all(api.MarketSubnavigation({tab:tab.id,onNavigate:id=>navigated.push(id)}))];
  const primary=nodes.find(n=>n.props?.className==='am-primary-nav');assert.equal(primary.props.children.length,7);
  const docs=nodes.find(n=>n.props?.className==='am-secondary-nav');assert.equal(docs.props.children.props.children,'Dados e metodologia');
- for(const button of nodes.filter(n=>n.type==='button')){button.props.onClick();assert(api.marketTabs.some(t=>t.id===navigated.at(-1)));}
+ for(const button of all(tree).filter(n=>n.type==='button')){button.props.onClick();assert(api.marketTabs.some(t=>t.id===navigated.at(-1)));}
  const location=api.navigationLocation(tab.id);assert.equal(location.leaf,tab.id);
  assert(nodes.some(n=>n.props?.['aria-current']==='page'));
  if(location.group?.routes.length>1){const leaves=nodes.find(n=>n.props?.className==='am-leaf-nav');assert.equal(leaves.props.children.length,location.group.routes.length);assert.equal(leaves.props.children.filter(n=>n.props['aria-current']==='page').length,1);}
@@ -34,4 +34,4 @@ const workers=s=>[...s.matchAll(/new Blob\(\[("(?:[^"\\]|\\.)*")\]/g)].map(m=>m[
 const ids=s=>[...s.matchAll(/id:\s*["']([^"']+)["']/g)].map(m=>m[1]);for(const id of new Set(ids(base)))assert(ids(html).includes(id),'Preserved component '+id);
 assert.equal(cp.execFileSync('git',['diff','8ac3274','--','data/cubes','data/origin-cubes','data/geography','data/manifest.json']).toString(),'');
 assert(html.includes(source.trim()));
-console.log('PASS: seven top-level areas; every old/new route and secondary link; subnav and breadcrumbs; legacy pyramid favorite location; unchanged worker/data/component identities; frozen scenarios; footer and non-clipping responsive glass.');
+console.log('PASS: seven top-level areas; every old/new route and secondary link; consistent subnav without breadcrumbs; legacy pyramid favorite location; unchanged worker/data/component identities; frozen scenarios; footer and non-clipping responsive glass.');

@@ -112,8 +112,8 @@ Automated geometry/source tests are not a claim that browser QA has happened.
 The SVG market identity and centered navigation live in `src/navigation.js/css`.
 `MarketHeader` portals the authored controls into the existing topbar, with an
 inline fallback, mounting cleanup and an explicit mobile-height override. Legacy
-routes, favorites and the seven areas remain registered. The population selector
-is in `+ filtros`; original `grupo_modelo` is available beside that disclosure.
+routes, favorites and the seven areas remain registered. The population and original `grupo_modelo` selectors
+are both in `+ filtros`; there is no separate quick-model row.
 Processing status is in the page footer, including Ranking.
 
 Header regression: `node tests/header-layout.test.cjs`. Browser pixel/layout QA
@@ -138,3 +138,19 @@ node tests/territory-channels.test.cjs
 This embeds the new component, then the Evolution worker, navigation and ranking
 sources, and refreshes CSP hashes without modifying reviewed data. See
 `TERRITORY_CHANNELS_AUDIT.md` for source codes, denominators, coverage and QA.
+
+## Compact shared navigation update
+
+The shell header now contains only the compact identity and seven primary areas.
+One shared second row immediately before the global filters contains the active
+area’s analyses. Evolution view state is owned by the dashboard; Cenários keeps
+its existing saved section state. Competition and Segments retain leaf route IDs.
+The Ranking format selector stays inside Ranking content, above its local controls
+and A/B comparison. Global filter order and all export/report footers are preserved.
+
+Build: `python scripts/build-scenarios.py`. Run every `tests/*.test.cjs` with Node
+and `python -m unittest discover -s tests -p 'test_scenarios.py' -v`.
+These checks validate component trees, state callbacks, responsive CSS contracts,
+data regressions, source embedding, JavaScript syntax and CSP hashes. They do not
+claim computed-layout or browser screenshot verification; rendered desktop/mobile
+and theme QA remains pending because browser access is blocked in this session.

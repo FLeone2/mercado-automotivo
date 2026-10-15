@@ -13,14 +13,19 @@ function navigationLocation(tab,explorationView){
  const leaf=tab==='explore'&&explorationView==='structure'?'structure':tab;
  return {leaf,group:marketNavigation.find(group=>group.routes.includes(leaf))??null,label:marketTabs.find(item=>item.id===leaf)?.label??'Panorama'};
 }
+const EVOLUTION_TABS=[{value:'executive',label:'Executiva'},{value:'composition',label:'Composição'},{value:'growth',label:'Crescimento'}];
 function MarketNavigation({tab,explorationView,onNavigate}){
  const location=navigationLocation(tab,explorationView);
- const link=(id,label,active)=>jsxRuntime.jsx('button',{type:'button',className:'am-nav-link','aria-current':active?'page':undefined,onClick:()=>onNavigate(id),children:label},id);
- return jsxRuntime.jsxs('div',{className:'am-navigation',children:[
-  jsxRuntime.jsxs('div',{className:'am-navigation-row',children:[jsxRuntime.jsx('nav',{'aria-label':'Áreas do mercado',className:'am-primary-nav',children:marketNavigation.map(group=>link(group.id,group.label,location.group?.id===group.id))}),jsxRuntime.jsx('nav',{'aria-label':'Documentação',className:'am-secondary-nav',children:link('quality','Dados e metodologia',tab==='quality')})]}),
-  location.group?.routes.length>1&&jsxRuntime.jsx('nav',{'aria-label':'Análises de '+location.group.label,className:'am-leaf-nav',children:location.group.routes.map(id=>link(id,marketTabs.find(item=>item.id===id).label,location.leaf===id))}),
-  jsxRuntime.jsx('div',{className:'am-breadcrumb','aria-label':'Localização atual',children:[location.group?.label,location.group?.routes.length>1?location.label:null].filter(Boolean).join(' / ')||location.label})
- ]});
+ return jsxRuntime.jsx('nav',{'aria-label':'Áreas do mercado',className:'am-primary-nav',children:marketNavigation.map(group=>jsxRuntime.jsx('button',{type:'button',className:'am-nav-link','aria-current':location.group?.id===group.id?'page':undefined,onClick:()=>onNavigate(group.id),children:group.label},group.id))});
+}
+// Every area uses the same second row, outside the shell's primary header.
+// Leaf routes keep their URL contracts; analytical views keep their own state.
+function MarketSubnavigation({tab,explorationView,onNavigate,evolutionView='executive',onEvolutionView,scenarioView='diagnostic',onScenarioView}){
+ const location=navigationLocation(tab,explorationView);
+ const options=tab==='history'?EVOLUTION_TABS:tab==='models'?SCENARIO_TABS:(location.group?.routes??[tab]).map(id=>({value:id,label:marketTabs.find(item=>item.id===id)?.label??location.label}));
+ const value=tab==='history'?evolutionView:tab==='models'?scenarioView:location.leaf;
+ const choose=tab==='history'?onEvolutionView:tab==='models'?onScenarioView:onNavigate;
+ return jsxRuntime.jsxs('div',{className:'am-subnavigation',children:[jsxRuntime.jsx('nav',{'aria-label':'Análises de '+(location.group?.label??location.label),className:'am-leaf-nav',children:options.map(item=>jsxRuntime.jsx('button',{type:'button',className:'am-nav-link','aria-current':value===item.value?'page':undefined,onClick:()=>choose?.(item.value),children:item.label},item.value))}),jsxRuntime.jsx('nav',{'aria-label':'Documentação',className:'am-secondary-nav',children:jsxRuntime.jsx('button',{type:'button',className:'am-nav-link','aria-current':tab==='quality'?'page':undefined,onClick:()=>onNavigate('quality'),children:'Dados e metodologia'})})]});
 }
 
 function MarketIdentity(){

@@ -81,7 +81,7 @@ const viewContext=vm.createContext({});vm.runInContext(fs.readFileSync(path.join
  const monthly=[{date:'2026-09-01',month:'2026-09',count:100}],market={total:100,monthly,groups:{marca:[{name:'TOYOTA',count:50}]},brandsByMonth:[{date:'2026-09-01',name:'TOYOTA',count:50}],propulsionByMonth:[],bodyByMonth:[]},model={evolution:{market,mitsubishi:{...market,total:0}}};
  const nodes=node=>node&&typeof node==='object'?[node,...Object.values(node.props??{}).flatMap(value=>Array.isArray(value)?value.flatMap(nodes):nodes(value))]:[];
  for(const view of ['executive','composition','growth']){
-  stateOverrides={0:view,1:true};states=[];const tree=context.render({model,scope:[]}),all=nodes(tree);assert(all.some(n=>n.type==='legacy'));assert(all.some(n=>n.props?.id==='evolution-'+view));const toggle=all.find(n=>n.type==='button'&&n.props.className==='ev-mit');assert(toggle.props['aria-pressed']);toggle.props.onClick();assert.equal(states[1],false);
+  stateOverrides={0:true};states=[];const tree=context.render({model,scope:[],view}),all=nodes(tree);assert(all.some(n=>n.type==='legacy'));assert(all.some(n=>n.props?.id==='evolution-'+view));const toggle=all.find(n=>n.type==='button'&&n.props.className==='ev-mit');assert(toggle.props['aria-pressed']);toggle.props.onClick();assert.equal(states[0],false);
  }
  console.log('Evolution: all three render paths, persistent legacy view and repeatable Mitsubishi toggle PASS');
 }
