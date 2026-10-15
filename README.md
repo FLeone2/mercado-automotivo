@@ -106,3 +106,35 @@ Before publication: real-browser desktop/mobile, light/dark, all five subtab
 switches, 2D/3D rotation/UF changes, focus/hover tooltips, scatter/heatmap selection,
 legacy expansion, CSV/report dialogs and back/forward require rendered QA.
 Automated geometry/source tests are not a claim that browser QA has happened.
+
+## Header and territory channel mix
+
+The SVG market identity and centered navigation live in `src/navigation.js/css`.
+`MarketHeader` portals the authored controls into the existing topbar, with an
+inline fallback, mounting cleanup and an explicit mobile-height override. Legacy
+routes, favorites and the seven areas remain registered. The population selector
+is in `+ filtros`; original `grupo_modelo` is available beside that disclosure.
+Processing status is in the page footer, including Ranking.
+
+Header regression: `node tests/header-layout.test.cjs`. Browser pixel/layout QA
+is still required on desktop/mobile and light/dark themes; source/component tests
+do not substitute for a rendered-browser check.
+
+`src/territory-channels.js/css` adds the second Brazil map and UF list below the
+existing territorial map. The snapshot worker supplies exact UF × channel
+counts from the same accepted-row filter pipeline. The comparison explicitly
+removes only `tipo_venda`, retaining all other territory filters. Unknown channel
+codes stay in the denominator. Polygon area, rather than bounding-box width, is
+divided proportionally; incomplete channel/month coverage suppresses shares.
+
+After changes to the header or territory channel component, run:
+
+```sh
+python scripts/build-territory-channels.py
+node tests/header-layout.test.cjs
+node tests/territory-channels.test.cjs
+```
+
+This embeds the new component, then the Evolution worker, navigation and ranking
+sources, and refreshes CSP hashes without modifying reviewed data. See
+`TERRITORY_CHANNELS_AUDIT.md` for source codes, denominators, coverage and QA.

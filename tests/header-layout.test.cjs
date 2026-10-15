@@ -1,0 +1,19 @@
+const fs=require('node:fs'),assert=require('node:assert/strict');
+const html=fs.readFileSync('index.html','utf8'),nav=fs.readFileSync('src/navigation.js','utf8'),css=fs.readFileSync('src/navigation.css','utf8');
+const jsx=(type,props,key)=>({type,props,key});
+let expanded=false,effects=[],state=[],removed=false;
+const React={useId:()=>':test:',useMemo:fn=>fn(),useState:initial=>[typeof initial==='boolean'?expanded:null,value=>state.push(value)],useEffect:fn=>effects.push(fn)};
+const api=new Function('React','jsxRuntime','require','document',nav+';return {MarketHeader,MarketIdentity};')(React,{jsx,jsxs:jsx},()=>({createPortal:(content,host)=>({content,host})}),{querySelector:selector=>{assert.equal(selector,'.dashboard-topbar-copy');return {appendChild:node=>{assert.equal(node.className,'am-header-host');}};},createElement:()=>({remove:()=>removed=true})});
+assert.equal(api.MarketHeader({tab:'dashboard'}).type,'header');const cleanup=effects[0]();assert.equal(state.length,1);cleanup();assert(removed);
+const identity=api.MarketIdentity();assert.equal(identity.props.children[0].type,'svg');assert(identity.props.children[1].props.children.some(n=>n.type==='h1'));
+const start=html.indexOf('const MARKET_PRIMARY_FILTER_IDS'),end=html.indexOf('const COMPARISON_LIMIT',start);
+const dataApp={Filters:'Filters',DateRangePicker:'DateRangePicker',Icon:'Icon'};
+const filters=new Function('React','jsxRuntime','dataApp','SCALAR_MARKET_FILTERS','categoricalSelection','BODY_TYPE_LABELS','SEGMENT_LABELS','bodyTypeLabel','structureDisplayLabel',html.slice(start,end)+';return {MarketFilterBar};')(React,{jsx,jsxs:jsx},dataApp,['date','population'],v=>Array.isArray(v)?v:!v||v==='all'?[]:[v],{},{},v=>v,v=>v);
+const definitions=[{id:'population',defaultValue:'light'},{id:'date'},...['bd_carroceria','marca','grupo_modelo','tipo_venda'].map(id=>({id,label:id}))];
+function walk(n){return n&&typeof n==='object'?[n,...[n.props?.children].flat(Infinity).flatMap(walk)]:[];}
+let changes=[];const props={definitions,values:{population:'light',grupo_modelo:['A']},onChange:(...args)=>changes.push(args)};
+let nodes=walk(filters.MarketFilterBar(props));let controls=nodes.filter(n=>n.type==='Filters');assert(!controls.some(n=>n.props.filters.some(f=>f.id==='population')));assert(controls.some(n=>n.props.filters.some(f=>f.id==='grupo_modelo')));assert.equal(nodes.find(n=>n.props?.className==='market-filter-more'||n.props?.className==='am-small-button market-filter-more').props['aria-expanded'],false);
+expanded=true;nodes=walk(filters.MarketFilterBar(props));controls=nodes.filter(n=>n.type==='Filters');const extra=controls.find(n=>n.props.ariaLabel==='Filtros adicionais do mercado');assert.deepEqual(extra.props.filters.map(f=>f.id),['population','tipo_venda']);const quick=controls.find(n=>n.props.ariaLabel==='Acesso rápido por grupo modelo');assert.equal(quick.props.filters[0].multiple,true);quick.props.onChange('grupo_modelo',['A','B']);assert.deepEqual(changes.at(-1),['grupo_modelo',['A','B']]);extra.props.onChange('population','all_content');assert.deepEqual(changes.at(-1),['population','all_content']);
+const content=html.slice(html.indexOf('function DashboardContent'),html.indexOf('function QualityView'));assert(!content.includes("className:'am-context-strip'"));assert(content.indexOf("className:'am-processing-footer'")>content.indexOf("className:'am-overview-footer am-page-footer'"));assert.equal((content.match(/jsxRuntime\.jsx\(Status,/g)||[]).length,1);assert(css.includes('grid-template-columns:1fr'));assert(!/overflow\s*:\s*(hidden|clip)/.test(css));
+console.log('PASS: SVG identity, shell portal mounting/cleanup and inline fallback, centered responsive navigation, universe disclosure, live quick group filter and processing status footer.');
+assert(css.includes('.dashboard-topbar:has(.am-header-host) .dashboard-topbar-inner{height:auto;'),'Override fixed 55px mobile shell height to avoid content overlap');

@@ -19,3 +19,32 @@
 @media(max-width:760px){.am-app{padding:18px 16px 28px;margin-top:16px;border-radius:24px}.am-app::before{inset:0}.am-navigation-row{gap:10px}.am-primary-nav{flex-basis:100%}.am-nav-link{padding:10px 12px}.am-secondary-nav{margin-left:0}}
 @media(max-width:440px){.am-app{padding:16px 12px 24px;border-radius:22px}.am-primary-nav{gap:4px}.am-nav-link{font-size:12px;padding:10px}.am-leaf-nav{gap:4px}}
 @media print{.am-navigation{display:none}.am-app{border:0;margin:0;padding:0;background:none}}
+/* Compact identity and centered navigation replace the shell's legacy title. */
+.dashboard-topbar-copy:has(>.am-header-host)>.dashboard-topbar-title{display:none}
+.dashboard-topbar-copy:has(>.am-header-host){width:100%;flex:1 1 auto}
+.am-header-host{width:100%;min-width:0;order:-1}
+.am-masthead{display:grid;grid-template-columns:minmax(210px,1fr) minmax(0,3fr) minmax(0,1fr);align-items:start;gap:22px;width:100%;padding:16px 0}
+.am-market-identity{display:flex;align-items:center;gap:12px;min-width:0;padding-top:3px}
+.am-market-logo{width:52px;height:52px;flex:none;filter:drop-shadow(0 4px 8px color-mix(in srgb,var(--accent) 12%,transparent))}
+.am-market-eyebrow{display:block;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--secondary);margin-bottom:5px}
+.am-market-identity h1{font-size:18px;line-height:1.2;letter-spacing:-.035em;margin:0;color:var(--text);font-weight:750}
+.am-masthead .am-navigation{margin:0}
+.am-masthead .am-navigation-row{justify-content:center;gap:8px}
+.am-masthead .am-primary-nav{flex:1 1 100%;justify-content:center;gap:4px}
+.am-masthead .am-primary-nav .am-nav-link{padding:10px 11px}
+.am-masthead .am-secondary-nav{justify-content:center}
+.am-masthead .am-secondary-nav .am-nav-link{min-height:30px;padding:5px 10px;font-size:10px;border:0}
+.am-masthead .am-leaf-nav{justify-content:center;margin-top:7px;padding-top:7px}
+.am-masthead .am-breadcrumb{text-align:center;margin-top:7px;font-size:10px}
+.am-processing-footer{display:flex;align-items:center;justify-content:flex-end;margin-top:20px;padding:14px 4px 0;border-top:1px solid var(--border);font-size:12px}
+.market-filter-quick{display:flex;flex-wrap:wrap;align-items:end;gap:12px}
+.market-filter-quick>.filters{flex:1}
+@media(max-width:1250px){.am-masthead{grid-template-columns:190px minmax(0,1fr);gap:16px}.am-market-identity h1{font-size:16px}.am-market-logo{width:44px;height:44px}}
+@media(max-width:760px){.am-masthead{grid-template-columns:1fr;gap:18px;padding:10px 0}.am-market-identity{justify-content:center}.am-masthead .am-primary-nav{justify-content:center}.am-masthead .am-primary-nav .am-nav-link{font-size:12px;padding:10px}.am-processing-footer{justify-content:center}}
+@media print{.am-masthead{display:block}.am-market-logo{width:40px;height:40px}.am-processing-footer{display:none}}
+/* The bundled mobile shell otherwise fixes its topbar to 55px. Let the new
+   wrapped masthead set its own height instead of overlapping the filters. */
+.dashboard-topbar:has(.am-header-host) .dashboard-topbar-inner{height:auto;min-height:55px;align-items:flex-start}
+.dashboard-topbar:has(.am-header-host) .dashboard-topbar-copy{display:flex;flex-wrap:wrap}
+.dashboard-topbar:has(.am-header-host) .dashboard-topbar-actions{padding-top:22px}
+@media(max-width:760px){.dashboard-topbar:has(.am-header-host) .dashboard-topbar-inner{flex-wrap:wrap}.dashboard-topbar:has(.am-header-host) .dashboard-topbar-copy{flex-basis:100%}.dashboard-topbar:has(.am-header-host) .dashboard-topbar-actions{padding:0 0 10px;margin-left:auto}}

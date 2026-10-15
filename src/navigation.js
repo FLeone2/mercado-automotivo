@@ -22,3 +22,28 @@ function MarketNavigation({tab,explorationView,onNavigate}){
   jsxRuntime.jsx('div',{className:'am-breadcrumb','aria-label':'Localização atual',children:[location.group?.label,location.group?.routes.length>1?location.label:null].filter(Boolean).join(' / ')||location.label})
  ]});
 }
+
+function MarketIdentity(){
+ return jsxRuntime.jsxs('div',{className:'am-market-identity',children:[
+  jsxRuntime.jsxs('svg',{className:'am-market-logo',viewBox:'0 0 64 64','aria-hidden':true,focusable:false,children:[
+   jsxRuntime.jsx('rect',{x:1,y:1,width:62,height:62,rx:19,fill:'var(--surface)',stroke:'var(--border-strong)'}),
+   jsxRuntime.jsx('path',{d:'M12 42 20 24h24l8 18M16 34h32M20 24l5-6h14l5 6',fill:'none',stroke:'var(--accent)',strokeWidth:3,strokeLinecap:'round',strokeLinejoin:'round'}),
+   jsxRuntime.jsx('path',{d:'M18 45h28M25 39v-6m7 6V27m7 12v-9',fill:'none',stroke:'var(--accent)',strokeWidth:3,strokeLinecap:'round'}),
+   jsxRuntime.jsx('circle',{cx:19,cy:46,r:4,fill:'var(--accent)'}),jsxRuntime.jsx('circle',{cx:45,cy:46,r:4,fill:'var(--accent)'})
+  ]}),
+  jsxRuntime.jsxs('div',{children:[jsxRuntime.jsx('span',{className:'am-market-eyebrow',children:'Inteligência de mercado'}),jsxRuntime.jsx('h1',{children:'Mercado Automotivo'})]})
+ ]});
+}
+// Move the authored header into the existing shell topbar; keep a usable inline
+// fallback while mounting and when the host is absent. React owns all controls.
+function MarketHeader(props){
+ const [host,setHost]=React.useState(null);
+ React.useEffect(()=>{
+  const target=document.querySelector('.dashboard-topbar-copy');
+  if(!target)return;
+  const node=document.createElement('div');node.className='am-header-host';target.appendChild(node);setHost(node);
+  return ()=>{node.remove();};
+ },[]);
+ const content=jsxRuntime.jsxs('header',{className:'am-masthead',children:[jsxRuntime.jsx(MarketIdentity,{}),jsxRuntime.jsx(MarketNavigation,props)]});
+ return host?require('react-dom').createPortal(content,host):content;
+}
