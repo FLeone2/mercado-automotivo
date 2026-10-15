@@ -1,0 +1,23 @@
+/* Blue is UI identity. Chart series, Mitsubishi, gains/losses and warnings retain
+   their established meanings. Segoe UI is local-only, with system fallbacks. */
+:root[data-app-theme="liquid-blue"]{
+  --font-sans-default:"Segoe UI",SegoeUI,system-ui,-apple-system,BlinkMacSystemFont,Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";
+  --dashboard-background:var(--background);
+  --data-card-radius:22px;
+  --data-card-background:light-dark(rgb(255 255 255 / 83%),rgb(23 43 69 / 88%));
+  --blue-ink:light-dark(#155bbb,#9ac6ff);
+  --interaction-hover:var(--muted);
+  --interaction-active:var(--control-hover);
+}
+:root[data-app-theme="liquid-blue"] .am-app::before{
+  background:radial-gradient(ellipse at 8% 6%,rgb(52 135 255 / 14%),transparent 55%),radial-gradient(ellipse at 88% 28%,rgb(52 135 255 / 8%),transparent 48%);
+}
+:root[data-app-theme="liquid-blue"] .am-small-button.am-primary{color:#10233f;background:#3487FF;border-color:#3487FF}
+:root[data-app-theme="liquid-blue"] .am-small-button.am-primary:hover{background:#69a6ff;border-color:#69a6ff}
+/* Exact brand blue is retained for controls/focus; deeper/lighter blue ink keeps
+   small link text readable in each appearance. */
+:root[data-app-theme="liquid-blue"] :is(.source-pill[href]:hover,.sql-keyword,.source-links a,.table .table-status[data-status=info],.data-app-format-button[aria-pressed=true],.notes a,.am-link-button,.am-pyramid-list-values strong,.am-pyramid-tooltip b,.am-ranking-periods span){color:var(--blue-ink)}
+:root[data-app-theme="liquid-blue"] .am-pyramid-figure :is(.am-pyramid-label-share,.am-pyramid-callout.is-active .am-pyramid-size-label,.am-pyramid-callout.is-active .am-pyramid-market-share){fill:var(--blue-ink)}
+@media(prefers-reduced-transparency:reduce){:root[data-app-theme="liquid-blue"]{--data-card-background:var(--surface)}}
+:root[data-app-theme="liquid-blue"] :is(.am-small-button.am-primary,.am-period-chip[aria-pressed=true]){color:#10233f;background:#3487FF;border-color:#3487FF;box-shadow:0 4px 12px rgb(52 135 255 / 18%),inset 0 1px 0 rgb(255 255 255 / 28%)}
+:root[data-app-theme="liquid-blue"] .am-small-button.am-primary:hover{background:#69a6ff;border-color:#69a6ff}

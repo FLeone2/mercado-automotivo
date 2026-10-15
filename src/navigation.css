@@ -1,5 +1,11 @@
 /* Shell routes remain registered for URLs/history. Only their flat menu is replaced. */
-.dashboard-root:has(.am-masthead) .dashboard-tabs-row{display:none}
+/* Hide the entire native tabs track, not only its contents: the shell's
+   open collapse otherwise keeps a 36px grid row below the authored header. */
+.dashboard-root:has(.am-masthead) .dashboard-tabs-collapse,.dashboard-root:has(.am-masthead) .dashboard-tabs-row{display:none}
+.dashboard-root:has(.am-masthead),.dashboard-root:has(.am-masthead):has(>.dashboard-topbar>.dashboard-tabs-collapse.is-open){--dashboard-tabs-visible-height:0px;--dashboard-tabs-expanded-height:0px}
+/* Only shell update metadata is removed; source dates in the dashboard remain. */
+.dashboard-topbar-copy:has(>.am-header-host) .dashboard-refresh-trigger,.dashboard-topbar-copy:has(>.am-header-host)>.freshness-label:has(.dashboard-freshness-full){display:none}
+.dashboard-root:has(.am-masthead)>main[data-data-app-content=dashboard]{padding-top:8px}
 .dashboard-topbar-copy:has(>.am-header-host)>.dashboard-topbar-title{display:none}
 .dashboard-topbar:has(.am-header-host){height:auto;min-height:0;align-self:start}
 .dashboard-topbar:has(.am-header-host) .dashboard-topbar-inner{height:auto;min-height:64px;display:flex;align-items:center;gap:12px;padding-block:0}
@@ -19,7 +25,7 @@
 .am-nav-link[aria-current=page]{color:var(--text);background:color-mix(in srgb,var(--accent) 12%,var(--surface));border-color:var(--accent);box-shadow:inset 0 1px 0 color-mix(in srgb,var(--surface-raised) 75%,transparent)}
 .am-nav-link:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 /* Shared second row precedes filters for every area, including loading states. */
-.am-subnavigation{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;margin:0 0 14px;padding:0 0 8px;border-bottom:1px solid var(--border)}
+.am-subnavigation{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;margin:0 0 8px;padding:0 0 4px;border-bottom:1px solid var(--border)}
 .am-leaf-nav{justify-content:flex-start;flex:1 1 auto}
 .am-leaf-nav .am-nav-link{font-size:12px;padding:7px 14px}
 .am-secondary-nav{flex:0 0 auto}
@@ -44,6 +50,6 @@
 .am-app .am-origin-view-metrics>.dashboard-component,.am-app .am-technology-metrics>.dashboard-component{height:auto;min-height:0;align-self:start}
 .am-processing-footer{display:flex;align-items:center;justify-content:flex-end;margin-top:18px;padding:12px 4px 0;border-top:1px solid var(--border);font-size:12px}
 @media(max-width:1100px){.am-masthead{gap:12px}.am-market-eyebrow{font-size:8px}.am-market-identity h1{font-size:15px}.am-primary-nav .am-nav-link{font-size:12px;padding-inline:8px}.am-app .market-filter-primary>.filters{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:760px){.dashboard-topbar:has(.am-header-host) .dashboard-topbar-inner{align-items:flex-start;gap:6px}.dashboard-topbar:has(.am-header-host) .dashboard-topbar-actions{align-self:flex-start;margin-top:8px}.am-masthead{grid-template-columns:1fr;gap:6px;padding:8px 0}.am-market-identity{justify-content:flex-start}.am-primary-nav{justify-content:flex-start;gap:2px}.am-primary-nav .am-nav-link{padding-inline:10px}.am-subnavigation{flex-wrap:wrap;gap:0;margin-bottom:12px}.am-secondary-nav{margin-left:auto}.am-app .market-filter-bar{padding:12px;border-radius:16px}.am-app .market-filter-primary{flex-wrap:wrap}.am-app .market-filter-primary>.filters{flex-basis:100%;grid-template-columns:repeat(2,minmax(0,1fr))}.am-app .market-filter-more{min-height:44px}.am-app .market-filter-structure>.am-period-shortcuts{margin-top:10px}.am-processing-footer{justify-content:center}}
+@media(max-width:760px){.dashboard-topbar:has(.am-header-host) .dashboard-topbar-inner{align-items:flex-start;gap:6px}.dashboard-topbar:has(.am-header-host) .dashboard-topbar-actions{align-self:flex-start;margin-top:8px}.am-masthead{grid-template-columns:1fr;gap:6px;padding:8px 0}.am-market-identity{justify-content:flex-start}.am-primary-nav{justify-content:flex-start;gap:2px}.am-primary-nav .am-nav-link{padding-inline:10px}.am-subnavigation{flex-wrap:wrap;gap:0;margin-bottom:8px}.am-secondary-nav{margin-left:auto}.am-app .market-filter-bar{padding:12px;border-radius:16px}.am-app .market-filter-primary{flex-wrap:wrap}.am-app .market-filter-primary>.filters{flex-basis:100%;grid-template-columns:repeat(2,minmax(0,1fr))}.am-app .market-filter-more{min-height:44px}.am-app .market-filter-structure>.am-period-shortcuts{margin-top:10px}.am-processing-footer{justify-content:center}}
 @media(max-width:440px){.am-market-identity h1{font-size:15px}.am-primary-nav .am-nav-link{font-size:11px;padding-inline:8px}.am-leaf-nav{gap:2px}.am-leaf-nav .am-nav-link{padding-inline:10px}.am-app .market-filter-primary>.filters{grid-template-columns:minmax(0,1fr)}}
 @media print{.am-primary-nav,.am-subnavigation,.am-processing-footer{display:none}.am-masthead{display:block}.am-app{border:0;margin:0;padding:0;background:none}}

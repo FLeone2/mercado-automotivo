@@ -1,0 +1,12 @@
+const fs=require('node:fs'),assert=require('node:assert/strict'),cp=require('node:child_process');
+const css=fs.readFileSync('src/navigation.css','utf8'),html=fs.readFileSync('index.html','utf8');
+assert(css.includes('.dashboard-root:has(.am-masthead) .dashboard-tabs-collapse,.dashboard-root:has(.am-masthead) .dashboard-tabs-row{display:none}'),'Remove the whole native tabs track, not only its children');
+assert(css.includes(':has(>.dashboard-topbar>.dashboard-tabs-collapse.is-open){--dashboard-tabs-visible-height:0px;--dashboard-tabs-expanded-height:0px}'),'Override expanded shell track dimensions');
+assert(css.includes('.dashboard-topbar-copy:has(>.am-header-host) .dashboard-refresh-trigger,.dashboard-topbar-copy:has(>.am-header-host)>.freshness-label:has(.dashboard-freshness-full){display:none}'),'Hide update control and static timestamp without hiding editing/report statuses');
+assert(css.includes('>main[data-data-app-content=dashboard]{padding-top:8px}'));
+assert(css.includes('min-height:44px;margin:0 0 8px;padding:0 0 4px'));
+assert(css.includes('.am-subnavigation{flex-wrap:wrap;gap:0;margin-bottom:8px}'));
+assert(css.includes('min-height:44px;height:auto;'),'Keep touch targets');
+assert.equal(html.match(/<style id="market-navigation-styles">([\s\S]*?)<\/style>/)[1].trim(),css.trim());
+assert.equal(cp.execFileSync('git',['diff','da24531','--','data','src/evolution-market-worker.js','src/navigation.js']).toString(),'');
+console.log('PASS: scoped update removal, full native-track collapse, compact desktop/mobile spacing, touch targets, embedded CSS and unchanged data/navigation/calculations (source contracts, not browser rendering).');
