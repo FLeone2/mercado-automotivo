@@ -1,0 +1,12 @@
+const fs=require('node:fs'),assert=require('node:assert/strict');
+const html=fs.readFileSync('index.html','utf8');const authored=html.slice(html.indexOf('(function(module,exports,require){')+'(function(module,exports,require){'.length,html.indexOf('})(__dataAuthoredModule,__dataAuthoredModule.exports,__dataAuthoredRequire)'));
+const api=new Function('require','exports',authored+';return {rankingBrandColor,rankingHighlights,rankingHighlightColor,rankingControlsValid,RANKING_DEFAULTS,sanitizeCriteria};')(()=>({}),{});
+const brands=JSON.parse(fs.readFileSync('data/manifest.json')).dimensionChoices.marca;
+assert.equal(new Set(brands.map(api.rankingBrandColor)).size,brands.length,'Every source brand gets a different color');
+assert.equal(api.rankingBrandColor('MITSUBISHI'),'var(--mitsubishi-color)');
+const selected=['FIAT','MITSUBISHI','TOYOTA'];const mixed=api.rankingHighlights({FIAT:4,TOYOTA:6},10,selected);assert.equal(mixed.length,2);assert(!api.rankingHighlightColor(mixed));assert.equal(mixed.reduce((n,p)=>n+p.count,0),10);
+const full=api.rankingHighlights({MITSUBISHI:10},10,selected);assert.equal(api.rankingHighlightColor(full),'var(--mitsubishi-color)');assert.equal(api.rankingHighlights({MITSUBISHI:10},10,[]).length,0);
+for(const b of selected)assert.equal(api.rankingBrandColor(b),api.rankingBrandColor(b));
+assert(api.rankingControlsValid({...api.RANKING_DEFAULTS,highlightBrands:selected}));assert(!api.rankingControlsValid({...api.RANKING_DEFAULTS,highlightBrands:['FIAT','FIAT']}));assert(!api.rankingControlsValid({...api.RANKING_DEFAULTS,highlightBrands:'FIAT'}));
+const criteria=api.sanitizeCriteria({tabId:'ranking',filters:{population:'light',date:'2026-09-01..2026-09-30'},ranking:{...api.RANKING_DEFAULTS,highlightBrands:selected}});assert.deepEqual(criteria.ranking.highlightBrands,selected);
+console.log('PASS: unique stable source-brand colors, Mitsubishi red, truthful mixed groups, clearing selection and favorites round-trip.');

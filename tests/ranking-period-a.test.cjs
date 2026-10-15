@@ -1,0 +1,13 @@
+const fs=require('node:fs'),vm=require('node:vm'),zlib=require('node:zlib'),assert=require('node:assert/strict');
+const html=fs.readFileSync('index.html','utf8'),authored=html.slice(html.indexOf('(function(module,exports,require){')+'(function(module,exports,require){'.length,html.indexOf('})(__dataAuthoredModule,__dataAuthoredModule.exports,__dataAuthoredRequire)'));
+const api=new Function('require','exports',authored+';return {rankingPeriodA};')(()=>({}),{});
+assert.equal(api.rankingPeriodA({}, {start:'2026-01-01',end:'2026-09-30'}),'2025-01-01..2025-09-30');
+assert.equal(api.rankingPeriodA({}, {start:'2025-11-10',end:'2026-02-18'}),'2024-11-10..2025-02-18');
+assert.equal(api.rankingPeriodA({}, {start:'2024-02-29',end:'2024-03-31'}),'2023-02-28..2023-03-31');
+assert.equal(api.rankingPeriodA({periodA:'2026-03-01..2026-03-31'}, {start:'2026-01-01',end:'2026-09-30'}),'2026-03-01..2026-03-31');
+assert.equal(api.rankingPeriodA({periodA:''}, {start:'2026-01-01',end:'2026-09-30'}),'2025-01-01..2025-09-30');
+const worker=[...html.matchAll(/new Blob\(\[("(?:[^"\\]|\\.)*")\]/g)].map(m=>JSON.parse(m[1])).find(w=>w.includes('async function runRanking'));
+const context=vm.createContext({console,DOMException,TextEncoder,TextDecoder,URL,Blob,Response,DecompressionStream,setTimeout});vm.runInContext(worker.replace(/\}\)\(\);\s*$/, 'globalThis.testApi={runRanking};})();'),context);
+const manifest=JSON.parse(fs.readFileSync('data/manifest.json'));const portable=x=>JSON.parse(JSON.stringify(x));
+(async()=>{const result=portable(await context.testApi.runRanking({filters:{date:'2026-01-01..2026-09-30',population:'light'},dimension:'marca',periodA:api.rankingPeriodA({},{start:'2026-01-01',end:'2026-09-30'}),topN:5,manifest:{...manifest,months:manifest.months.filter(m=>m.month.startsWith('2026-'))}},{loadCube:async meta=>JSON.parse(zlib.gunzipSync(fs.readFileSync('data/'+meta.cubePath)))}));
+assert.equal(result.periodA.start,'2025-01-01');assert.equal(result.periodA.end,'2025-09-30');assert.equal(result.beforeTotal,null);assert(result.rows.every(r=>r.beforeCount===null));assert(!result.comparable);console.log('PASS: previous-year automatic A, cross-year dates, leap day, manual override/reset, unavailable earlier year stays unavailable.');})().catch(e=>{console.error(e);process.exitCode=1});
