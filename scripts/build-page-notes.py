@@ -4,6 +4,13 @@ import re,hashlib,base64,argparse,sys
 ROOT=Path(__file__).resolve().parents[1]
 CLASSES='am-footnote|am-market-view-note|ev-interactive-note|catalog-method|cc-method|tc-intro|tc-panel-note|anm-map-note'
 def transform_source(html):
+    # Cenários owns its disclosure footer; do not route its notes to a second footer.
+    scenario_block=None
+    start,end='// BEGIN SCENARIOS UI','// END SCENARIOS UI'
+    if start in html and end in html:
+        a=html.index(start);b=html.index(end,a)+len(end)
+        scenario_block=html[a:b]
+        html=html[:a]+'/* SCENARIO OWNED NOTES PLACEHOLDER */'+html[b:]
     # Preserve the original semantic tag without parsing or changing child expressions.
     pattern=r"(jsxRuntime\.(?:jsx|jsxs)\()(['\"])(p|div)\2(,\s*\{)(\s*className:\s*['\"](?:"+CLASSES+r")[ '\"]*)"
     html=re.sub(pattern,lambda m:m[1]+'PageNote'+m[4]+"originalTag:'"+m[3]+"',"+m[5],html)
@@ -14,6 +21,8 @@ def transform_source(html):
         pattern=r'(function '+name+r'\([^\n]+?return jsxRuntime\.jsx\()'+re.escape(old)+r'(?=,)'
         html=re.sub(pattern,lambda m:m[1]+new,html,count=1)
     html=re.sub(r"((?:h|hs)\()(['\"])details\2(,\s*\{className:\s*['\"]anm-map-method['\"])",lambda m:m[1]+'PageNoteBlock'+m[3],html)
+    if scenario_block is not None:
+        html=html.replace('/* SCENARIO OWNED NOTES PLACEHOLDER */',scenario_block,1)
     return html
 
 def transform(html):

@@ -1,4 +1,5 @@
-const publishedSource=require('node:child_process').execFileSync('python',['scripts/build-page-notes.py','--source-only','src/scenarios.js'],{cwd:require('node:path').join(__dirname,'..'),encoding:'utf8'});
+// Cenários owns its notes footer; its embedded source must remain untransformed.
+const publishedSource=require('node:fs').readFileSync(require('node:path').join(__dirname,'../src/scenarios.js'),'utf8');
 const fs=require('node:fs'),assert=require('node:assert/strict');
 const html=fs.readFileSync('index.html','utf8'),source=fs.readFileSync('src/scenarios.js','utf8');
 const jsx=(type,props,key)=>({type,props:props??{},key});const React={useState:value=>[typeof value==='function'?value():value,()=>{}],useMemo:fn=>fn(),useEffect:()=>{}};

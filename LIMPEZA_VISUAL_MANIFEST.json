@@ -1,0 +1,138 @@
+{
+  "baseCommit": "9be671cff5631f5413b6f248b23d470015bbbe85",
+  "includesPriorVisualPatch": true,
+  "validation": {
+    "nodeTests": 150,
+    "pythonTests": 109,
+    "matchingCspHashes": 2,
+    "scenarioIdsPreserved": 64,
+    "browserVisualVerified": false
+  },
+  "files": [
+    {
+      "path": "LIMPEZA_VISUAL_GERAL.md",
+      "sha256": "e70e11b5417c3d57200dd31d11fea2e031f5215c3f7113d9bc9b4589a359cd6f",
+      "bytes": 3065
+    },
+    {
+      "path": "_headers",
+      "sha256": "e3d0c8d538a0fd931adeae893cb52236a326453933e462009f517e824a6c14dc",
+      "bytes": 877
+    },
+    {
+      "path": "index.html",
+      "sha256": "8cbb9c228216075dedab45bfe24e8d81491112a769ae09f5fb977b8d897ea91a",
+      "bytes": 6303201
+    },
+    {
+      "path": "scripts/build-megapackage.py",
+      "sha256": "f3dd8584abcbde2d66705b0317b99cc10a6b0477234390d621f2db98abd80d7c",
+      "bytes": 559
+    },
+    {
+      "path": "scripts/build-overview-refinements.py",
+      "sha256": "3f2232fbd160bfbbeb7fcebef487a6eff5b7fac62e013412b6b26d8bb602c415",
+      "bytes": 803
+    },
+    {
+      "path": "scripts/build-page-notes.py",
+      "sha256": "892e76ab16cef408583369c195ce2021e5370d5e90288dacacce2d47fe8c7169",
+      "bytes": 3963
+    },
+    {
+      "path": "scripts/build-scenario-refinements.py",
+      "sha256": "894ece3dd300445b08f676a7a0090e4c9b7a7d48284028379a7e2ce9ebf35383",
+      "bytes": 709
+    },
+    {
+      "path": "scripts/build-shared-layout-refinements.py",
+      "sha256": "f5e5fecd3298b241ed0721b7a73643cd16eaae60fd8193af3bbc2f80f2f69379",
+      "bytes": 620
+    },
+    {
+      "path": "src/animations-charts.css",
+      "sha256": "349766c2362d2d9eb64a18d92fedad9e18b5f9a1408252877e17b72682825718",
+      "bytes": 8161
+    },
+    {
+      "path": "src/animations.css",
+      "sha256": "94e9638d1222b6255f3554dda2621c1991f18839329fd4bc8dec02c774c8bd62",
+      "bytes": 3042
+    },
+    {
+      "path": "src/catalog-maps.css",
+      "sha256": "8216d058408afae27cfafa8f0e8f9f9c7f7a21a9dc13e6c374cbc1226b6fbb8a",
+      "bytes": 2404
+    },
+    {
+      "path": "src/overview-refinements.css",
+      "sha256": "daccada0e5283169f7224eac570834fecfec1153821d9c5af4f7dcb0b4739922",
+      "bytes": 980
+    },
+    {
+      "path": "src/primary-map.css",
+      "sha256": "ccd0a4304f8d43b81246cd8db1481536606e950aa9972c91ba3e0ec1b443dd21",
+      "bytes": 8868
+    },
+    {
+      "path": "src/primary-map.js",
+      "sha256": "1f6f4742fcdab1b1aa731aa29d5b5cd8c22e3f35af31078b5ae54d3ea99e67b5",
+      "bytes": 21416
+    },
+    {
+      "path": "src/scenarios.css",
+      "sha256": "4d4749d5d1ee0307791c827d40dfd58159a855e3024da276aebb8513d433aba1",
+      "bytes": 9568
+    },
+    {
+      "path": "src/scenarios.js",
+      "sha256": "85bd53052c109234104389f9e141a6956eb608ad4f943f3bd089a9499c422cd6",
+      "bytes": 120021
+    },
+    {
+      "path": "src/shared-layout-refinements.css",
+      "sha256": "07d2c660ff0a7dbefbece8a30bd5d6ad0a66c23aa7df176ffa09c8a692f3f070",
+      "bytes": 4497
+    },
+    {
+      "path": "tests/animations-responsive-layout.test.cjs",
+      "sha256": "a2975b89330637a2d59700e1720fb715d4509bf37d94abff54773ef5a04eb3fa",
+      "bytes": 3983
+    },
+    {
+      "path": "tests/primary-map-national-readout.test.cjs",
+      "sha256": "e3f2f41be928b6259393c6cedb30d95938328e2b55cda132632f19e0740eeffe",
+      "bytes": 7009
+    },
+    {
+      "path": "tests/scenarios-clean-layout.test.cjs",
+      "sha256": "4d0bab9ff1b43e5da708dbb1012de40895ed5b54cc1ef0a5c414465aea013008",
+      "bytes": 6352
+    },
+    {
+      "path": "tests/scenarios-phases-ui.test.cjs",
+      "sha256": "fd1709939535da1aa793a67016833d8df25b3a008f14d873c4070d23e9a40cc4",
+      "bytes": 18463
+    },
+    {
+      "path": "tests/scenarios-ui.test.cjs",
+      "sha256": "92210449d08fdd56668a3c3334173e9f1348fc81aed8d61b1486f7fd3fbea34d",
+      "bytes": 6113
+    },
+    {
+      "path": "tests/shared-layout-refinements.test.cjs",
+      "sha256": "68991e2731912ab6e7184e6d145ceec042f8b289c11fd290b2c0af28b3cac920",
+      "bytes": 3770
+    },
+    {
+      "path": "tests/test_overview_refinements.py",
+      "sha256": "61bade813709232e8f3e05a0dc4d3d5cff64a37b2d89033e6afe9a48cdff43e3",
+      "bytes": 1282
+    },
+    {
+      "path": "tests/test_scenario_refinement_build.py",
+      "sha256": "4217be14dd9adc582cb0bc34fdc999000cd38e0a2cd815c7585510f4f7a4731c",
+      "bytes": 1376
+    }
+  ]
+}

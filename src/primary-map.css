@@ -19,3 +19,11 @@
 .pm-primary .table-row-action span{opacity:1}
 .pm-primary .table-row-action:hover{background:var(--pm-land)}
 @media(pointer:coarse){.pm-primary .table-row-action{flex-basis:44px;width:44px;min-height:44px}}
+
+/* National quick consultation stays centered below Brazil, with stable space
+   for every metric and the idle hint. Municipal details retain their layout. */
+.pm-primary .pm-national-readout{box-sizing:border-box;height:144px;padding:12px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;text-align:center;color:var(--text,#172d4b)}
+.pm-primary .pm-national-place{font-size:15px;line-height:1.4;font-weight:600}
+.pm-primary .pm-national-value{font-size:clamp(32px,4vw,44px);line-height:1.15;font-weight:700;font-variant-numeric:tabular-nums;color:var(--text,#172d4b)}
+.pm-primary .pm-national-metric{font-size:13px;line-height:1.4;color:var(--secondary,#64748b)}
+.pm-primary .pm-national-hint{max-width:360px;font-size:13px;line-height:1.6;color:var(--secondary,#64748b)}
