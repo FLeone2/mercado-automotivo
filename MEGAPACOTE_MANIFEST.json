@@ -1,0 +1,950 @@
+{
+  "baseCommit": "9bbf173818d82207f5d3e66340ac1660953d3755",
+  "baseTree": "890f2f877567fe770b327549e1535f447cd5794d",
+  "verifiedMainAt": "2026-10-16T10:41:24Z",
+  "mode": "cumulative_overlay_no_deletions",
+  "supersedes": "all_previous_unpublished_overlays",
+  "previousOverlayFilesPreserved": 82,
+  "previousOverlayPaths": [
+    "CATALOG_BASE_TREE.json",
+    "CATALOG_OVERLAY_MANIFEST.json",
+    "CATALOG_QA_REPORT.md",
+    "CATALOG_README.md",
+    "PHASE23_MODELS.md",
+    "PHASE3_HIERARCHY.md",
+    "PHASE3_SPATIAL.md",
+    "PHASES_1_3_README.md",
+    "PHASES_IMPLEMENTATION_STATUS.md",
+    "PHASES_OVERLAY_MANIFEST.json",
+    "PHASES_QA_REPORT.md",
+    "PRIMARY_MAP_UPDATE.md",
+    "_headers",
+    "data/geography/catalog-population.json",
+    "data/scenarios/manifest.json",
+    "data/scenarios/phase1_sources.json",
+    "data/scenarios/phase23_models.json",
+    "data/scenarios/phase2_regional.json",
+    "data/scenarios/phase3_hierarchy.json",
+    "data/scenarios/phase3_spatial.json",
+    "data/scenarios/sources/census_density.json.gz",
+    "data/scenarios/sources/census_density.receipt.json",
+    "data/scenarios/sources/census_household_income.json.gz",
+    "data/scenarios/sources/census_household_income.receipt.json",
+    "data/scenarios/sources/census_urbanization.json.gz",
+    "data/scenarios/sources/census_urbanization.receipt.json",
+    "data/scenarios/sources/ipca.json.gz",
+    "data/scenarios/sources/ipca.receipt.json",
+    "data/scenarios/sources/pam.json.gz",
+    "data/scenarios/sources/pam.receipt.json",
+    "data/scenarios/sources/pnad_real_income.json.gz",
+    "data/scenarios/sources/pnad_real_income.receipt.json",
+    "data/scenarios/sources/pnad_real_mass.json.gz",
+    "data/scenarios/sources/pnad_real_mass.receipt.json",
+    "data/scenarios/sources/senatran.receipt.json",
+    "data/scenarios/sources/senatran_2026_09.xlsx",
+    "index.html",
+    "scripts/build-catalog.py",
+    "scripts/build-phases.py",
+    "scripts/build-primary-map.py",
+    "scripts/build_catalog_population.py",
+    "scripts/package-catalog.py",
+    "scripts/phase1_sources.py",
+    "scripts/phase23_models.py",
+    "scripts/phase2_regional.py",
+    "scripts/phase3_hierarchy.py",
+    "scripts/phase3_spatial.py",
+    "scripts/requirements-scenarios.txt",
+    "src/catalog-charts.css",
+    "src/catalog-charts.js",
+    "src/catalog-maps.css",
+    "src/catalog-maps.js",
+    "src/catalog-themes.css",
+    "src/catalog-themes.js",
+    "src/catalog-workspace.css",
+    "src/catalog-workspace.js",
+    "src/evolution-market-worker.js",
+    "src/primary-map-state.js",
+    "src/primary-map.css",
+    "src/primary-map.js",
+    "src/scenarios.css",
+    "src/scenarios.js",
+    "tests/blue-theme.test.cjs",
+    "tests/catalog-charts.test.cjs",
+    "tests/catalog-maps.test.cjs",
+    "tests/catalog-real-source.test.cjs",
+    "tests/catalog-themes.test.cjs",
+    "tests/catalog-worker.test.cjs",
+    "tests/catalog-workspace.test.cjs",
+    "tests/compact-navigation.test.cjs",
+    "tests/header-gap.test.cjs",
+    "tests/navigation.test.cjs",
+    "tests/primary-map-state.test.cjs",
+    "tests/primary-map.test.cjs",
+    "tests/scenarios-phases-ui.test.cjs",
+    "tests/territory-channels.test.cjs",
+    "tests/test_phase1_sources.py",
+    "tests/test_phase23_models.py",
+    "tests/test_phase2_regional.py",
+    "tests/test_phase3_hierarchy.py",
+    "tests/test_phase3_spatial.py",
+    "tests/test_phases_integration.py"
+  ],
+  "previousMegaPackagePathsPreserved": 124,
+  "previousMegaPackagePaths": [
+    "ANIMATIONS_DATA_AUDIT.md",
+    "CATALOG_BASE_TREE.json",
+    "CATALOG_OVERLAY_MANIFEST.json",
+    "CATALOG_QA_REPORT.md",
+    "CATALOG_README.md",
+    "INTERACTIVE_EVOLUTION_UPDATE.md",
+    "MEGAPACOTE_MANIFEST.json",
+    "MEGAPACOTE_QA.md",
+    "MEGAPACOTE_README.md",
+    "PAGE_NOTES_LAYOUT_UPDATE.md",
+    "PHASE23_MODELS.md",
+    "PHASE3_HIERARCHY.md",
+    "PHASE3_SPATIAL.md",
+    "PHASES_1_3_README.md",
+    "PHASES_IMPLEMENTATION_STATUS.md",
+    "PHASES_OVERLAY_MANIFEST.json",
+    "PHASES_QA_REPORT.md",
+    "PRIMARY_MAP_UPDATE.md",
+    "_headers",
+    "data/geography/catalog-population.json",
+    "data/scenarios/manifest.json",
+    "data/scenarios/phase1_sources.json",
+    "data/scenarios/phase23_models.json",
+    "data/scenarios/phase2_regional.json",
+    "data/scenarios/phase3_hierarchy.json",
+    "data/scenarios/phase3_spatial.json",
+    "data/scenarios/sources/census_density.json.gz",
+    "data/scenarios/sources/census_density.receipt.json",
+    "data/scenarios/sources/census_household_income.json.gz",
+    "data/scenarios/sources/census_household_income.receipt.json",
+    "data/scenarios/sources/census_urbanization.json.gz",
+    "data/scenarios/sources/census_urbanization.receipt.json",
+    "data/scenarios/sources/ipca.json.gz",
+    "data/scenarios/sources/ipca.receipt.json",
+    "data/scenarios/sources/pam.json.gz",
+    "data/scenarios/sources/pam.receipt.json",
+    "data/scenarios/sources/pnad_real_income.json.gz",
+    "data/scenarios/sources/pnad_real_income.receipt.json",
+    "data/scenarios/sources/pnad_real_mass.json.gz",
+    "data/scenarios/sources/pnad_real_mass.receipt.json",
+    "data/scenarios/sources/senatran.receipt.json",
+    "data/scenarios/sources/senatran_2026_09.xlsx",
+    "index.html",
+    "scripts/audit-animation-history.cjs",
+    "scripts/build-animations.py",
+    "scripts/build-catalog.py",
+    "scripts/build-interactive.py",
+    "scripts/build-megapackage.py",
+    "scripts/build-page-notes.py",
+    "scripts/build-phases.py",
+    "scripts/build-primary-map.py",
+    "scripts/build_catalog_population.py",
+    "scripts/package-catalog.py",
+    "scripts/package-megapackage.py",
+    "scripts/phase1_sources.py",
+    "scripts/phase23_models.py",
+    "scripts/phase2_regional.py",
+    "scripts/phase3_hierarchy.py",
+    "scripts/phase3_spatial.py",
+    "scripts/requirements-scenarios.txt",
+    "src/animations-charts.css",
+    "src/animations-charts.js",
+    "src/animations-data.js",
+    "src/animations-maps.css",
+    "src/animations-maps.js",
+    "src/animations-worker.js",
+    "src/animations.css",
+    "src/animations.js",
+    "src/catalog-charts.css",
+    "src/catalog-charts.js",
+    "src/catalog-maps.css",
+    "src/catalog-maps.js",
+    "src/catalog-themes.css",
+    "src/catalog-themes.js",
+    "src/catalog-workspace.css",
+    "src/catalog-workspace.js",
+    "src/evolution-brush.css",
+    "src/evolution-brush.js",
+    "src/evolution-market-worker.js",
+    "src/evolution-years.css",
+    "src/evolution-years.js",
+    "src/navigation.js",
+    "src/page-notes.css",
+    "src/page-notes.js",
+    "src/primary-map-state.js",
+    "src/primary-map.css",
+    "src/primary-map.js",
+    "src/scenarios.css",
+    "src/scenarios.js",
+    "tests/animations-charts.test.cjs",
+    "tests/animations-data.test.cjs",
+    "tests/animations-integration.test.cjs",
+    "tests/animations-maps.test.cjs",
+    "tests/animations-player.test.cjs",
+    "tests/animations-real-source.test.cjs",
+    "tests/animations-worker.test.cjs",
+    "tests/animations-workspace.test.cjs",
+    "tests/blue-theme.test.cjs",
+    "tests/catalog-charts.test.cjs",
+    "tests/catalog-maps.test.cjs",
+    "tests/catalog-real-source.test.cjs",
+    "tests/catalog-themes.test.cjs",
+    "tests/catalog-worker.test.cjs",
+    "tests/catalog-workspace.test.cjs",
+    "tests/compact-navigation.test.cjs",
+    "tests/composition-selector.test.cjs",
+    "tests/evolution-brush.test.cjs",
+    "tests/evolution-years.test.cjs",
+    "tests/header-gap.test.cjs",
+    "tests/interactive-real-source.test.cjs",
+    "tests/interactive-worker.test.cjs",
+    "tests/navigation.test.cjs",
+    "tests/page-notes.test.cjs",
+    "tests/primary-map-state.test.cjs",
+    "tests/primary-map.test.cjs",
+    "tests/scenarios-phases-ui.test.cjs",
+    "tests/scenarios-ui.test.cjs",
+    "tests/territory-channels.test.cjs",
+    "tests/test_phase1_sources.py",
+    "tests/test_phase23_models.py",
+    "tests/test_phase2_regional.py",
+    "tests/test_phase3_hierarchy.py",
+    "tests/test_phase3_spatial.py",
+    "tests/test_phases_integration.py"
+  ],
+  "performanceStage1": {
+    "sharedSessionWorkers": true,
+    "reusableMonthlyAggregates": true,
+    "boundedVersionedIndexedDB": true,
+    "retainedChartsWhileUpdating": true,
+    "serverInfrastructure": false,
+    "instantFirstLoadGuaranteed": false
+  },
+  "primaryNavigationAreas": 8,
+  "animationViews": [
+    "races",
+    "bubbles",
+    "mix",
+    "maps"
+  ],
+  "evolutionAdditionalPanels": "Executiva only: interval brush and annual curves",
+  "pickupRule": "bd_segmento exactly PICK-UP MID; intersects all other filters",
+  "chartFormatsPreserved": 13,
+  "mapFormatsPreserved": 7,
+  "themes": {
+    "requested": 14,
+    "legacy": 5,
+    "total": 19
+  },
+  "history": {
+    "months": 129,
+    "allSourceRegistrations": 24556119,
+    "lightRegistrations": 24541931,
+    "heavyRecordsInAugust2024": 14188,
+    "sourceDataUnchanged": true
+  },
+  "tests": {
+    "nodeCases": 117,
+    "nodeFiles": 45,
+    "pythonCases": 101
+  },
+  "browserVisualQA": "not_run_restricted_environment; automated source/data/lifecycle tests are not pixel validation",
+  "simulationPhase4Activated": false,
+  "newTargetsFeature": false,
+  "files": [
+    {
+      "path": "ANIMATIONS_DATA_AUDIT.md",
+      "bytes": 8389,
+      "sha256": "8b66b99b3ead4c2f72ae6b146561f5ba20c1645574efe94aa9b1b4155d917e76"
+    },
+    {
+      "path": "CATALOG_BASE_TREE.json",
+      "bytes": 98941,
+      "sha256": "4d6a12bb2a56c99eedaf9594c7c484c3bc23c304dee915e5220994bf1b0d3e93"
+    },
+    {
+      "path": "CATALOG_OVERLAY_MANIFEST.json",
+      "bytes": 14212,
+      "sha256": "3d05e2ec81b8e4efcacd71bbf594695da4147d17dc71beb74e1b4cdcff376f38"
+    },
+    {
+      "path": "CATALOG_QA_REPORT.md",
+      "bytes": 5580,
+      "sha256": "a50fef18c45221817fa6b37e126159b860441157766d1cbb37ffd183a9686640"
+    },
+    {
+      "path": "CATALOG_README.md",
+      "bytes": 7494,
+      "sha256": "90e8e2fb8b1b197fb9542df2bc9ace964c8bce9bd6d5459dfee9cc135a2b9528"
+    },
+    {
+      "path": "INTERACTIVE_EVOLUTION_UPDATE.md",
+      "bytes": 3429,
+      "sha256": "019efbeecc598137076516089b58596c03cde9fd001c2cefac53667d89a91fcf"
+    },
+    {
+      "path": "MEGAPACOTE_QA.md",
+      "bytes": 8846,
+      "sha256": "451497a49c1110ba2182ac0d387cfd810b188b9fc3851746b561c5094f20eb15"
+    },
+    {
+      "path": "MEGAPACOTE_README.md",
+      "bytes": 5559,
+      "sha256": "c3f703708c74188b6f2da7d0cfcdadffdef07c0c563c25730bc7d01195ad7d0f"
+    },
+    {
+      "path": "PAGE_NOTES_LAYOUT_UPDATE.md",
+      "bytes": 1771,
+      "sha256": "20696ea7ceb52bbceb3d9ffdc83de32e6197362b8968822ea694af35f0128542"
+    },
+    {
+      "path": "PERFORMANCE_STAGE1.md",
+      "bytes": 3921,
+      "sha256": "ff715067e36be0070a23b46cdace3f908e48c65309ec0c6da1d5020d1408a47e"
+    },
+    {
+      "path": "PHASE23_MODELS.md",
+      "bytes": 17724,
+      "sha256": "d1787521d030fd39dde1c645a3cc3cbe01647fe73d4ae9d1f0644e630e68a123"
+    },
+    {
+      "path": "PHASE3_HIERARCHY.md",
+      "bytes": 13829,
+      "sha256": "1beb791f701e705efe1d662cb94f0836a379f1629d4ff9b7ac87816c13097714"
+    },
+    {
+      "path": "PHASE3_SPATIAL.md",
+      "bytes": 11244,
+      "sha256": "a8543a3275ceb94634ddf01e8c3110f4d356293e91eade6a60ada0c53f0af924"
+    },
+    {
+      "path": "PHASES_1_3_README.md",
+      "bytes": 4432,
+      "sha256": "0965b39c84615cb5ccfae950b5885ec6dd694c0e5489279ec513f0ae24abd866"
+    },
+    {
+      "path": "PHASES_IMPLEMENTATION_STATUS.md",
+      "bytes": 5679,
+      "sha256": "86c852a8d70657ed56ce770f4246335bb2a294382f089e98925f6c62330c7128"
+    },
+    {
+      "path": "PHASES_OVERLAY_MANIFEST.json",
+      "bytes": 8601,
+      "sha256": "7424c547fc8ead673c3cb86823904fa5438aa899ac2abeb66ba82aee83c576cd"
+    },
+    {
+      "path": "PHASES_QA_REPORT.md",
+      "bytes": 2854,
+      "sha256": "f6f4821add77fc65a862643ff610d8225f432079a18131c93dc23641c591fdf9"
+    },
+    {
+      "path": "PRIMARY_MAP_UPDATE.md",
+      "bytes": 4040,
+      "sha256": "dc414aae371083ba194f9748862ea6b25f47b1a5e765fc52750e447afb3b135a"
+    },
+    {
+      "path": "_headers",
+      "bytes": 877,
+      "sha256": "9cb342b5c22bc3e0643db7679f091e3d980645982ce6f0beba1748751d2bc667"
+    },
+    {
+      "path": "data/geography/catalog-population.json",
+      "bytes": 658826,
+      "sha256": "996fcbf0d75fca2b528f88030c989917665b783fbe6e5618e554a1fae9021fb5"
+    },
+    {
+      "path": "data/scenarios/manifest.json",
+      "bytes": 4110,
+      "sha256": "40766793f1eebb801fb43ef1311a15930ab92374fc9f0e18b1af0d5dd7020e45"
+    },
+    {
+      "path": "data/scenarios/phase1_sources.json",
+      "bytes": 4250336,
+      "sha256": "51b7056537d00a66650bca5f64c421b675436ed7da5d1db0f1ab1a53f2ea5994"
+    },
+    {
+      "path": "data/scenarios/phase23_models.json",
+      "bytes": 2451269,
+      "sha256": "d6eab51fcd1cc57adf6e6ab6af770d543426a0d77b3dfc42b74f0d95a8c66bc1"
+    },
+    {
+      "path": "data/scenarios/phase2_regional.json",
+      "bytes": 4709550,
+      "sha256": "6b200d1045dfef849393e187749382dde92324b3aa28ca45e185d3d9a7c3680f"
+    },
+    {
+      "path": "data/scenarios/phase3_hierarchy.json",
+      "bytes": 4324238,
+      "sha256": "384645b67de8ce7b2d6254f8752b805248dbf7df7e1bcbc1c6f8b93fb42e1b59"
+    },
+    {
+      "path": "data/scenarios/phase3_spatial.json",
+      "bytes": 9651981,
+      "sha256": "22985004a259a63bee73465c909e582c3caf27ad4fabd19b0c5ae919415e919c"
+    },
+    {
+      "path": "data/scenarios/sources/census_density.json.gz",
+      "bytes": 88356,
+      "sha256": "f0c94affbffebf50fb554751db22e2836236cf5c8f71fc6f38d86a606f32c1d5"
+    },
+    {
+      "path": "data/scenarios/sources/census_density.receipt.json",
+      "bytes": 601,
+      "sha256": "e11d495fe2ccf1d041c9e0c29ca7e53056d486caca42e64dfabd87e0eeaac007"
+    },
+    {
+      "path": "data/scenarios/sources/census_household_income.json.gz",
+      "bytes": 179308,
+      "sha256": "cc36e7b86f51e333105ff9bd91e4e48e18e2a35763fb08729e23fa8908823140"
+    },
+    {
+      "path": "data/scenarios/sources/census_household_income.receipt.json",
+      "bytes": 649,
+      "sha256": "581a938aa3ed365b20122a6129b4853642d2131a9a872249ab1429c3e087c21a"
+    },
+    {
+      "path": "data/scenarios/sources/census_urbanization.json.gz",
+      "bytes": 135177,
+      "sha256": "a38fda430343bd18e9f839cfc96c29223f2164d6d0bbd0cb0015a0aa452f32d9"
+    },
+    {
+      "path": "data/scenarios/sources/census_urbanization.receipt.json",
+      "bytes": 617,
+      "sha256": "c916f1ef9f6139320d89b4af2efdb131b479707e455aeb6b0f279f77229e92a1"
+    },
+    {
+      "path": "data/scenarios/sources/ipca.json.gz",
+      "bytes": 3827,
+      "sha256": "9691774162021e9615b8b790e2efbfa71e93c6f20d56c85576b47f9e37c9dfec"
+    },
+    {
+      "path": "data/scenarios/sources/ipca.receipt.json",
+      "bytes": 606,
+      "sha256": "4506d5d3449c40bef35ec3f496390240bd0fbe9155808a11a189135ec95f1d61"
+    },
+    {
+      "path": "data/scenarios/sources/pam.json.gz",
+      "bytes": 142700,
+      "sha256": "7472f389e12428b390e3a04b77d4c911c047885eea8c8c66e73eea13fb9d0249"
+    },
+    {
+      "path": "data/scenarios/sources/pam.receipt.json",
+      "bytes": 604,
+      "sha256": "2b61244e6f14bf48141197a17e52787198de2a1927b2fbf282443391fb4f2cec"
+    },
+    {
+      "path": "data/scenarios/sources/pnad_real_income.json.gz",
+      "bytes": 1572,
+      "sha256": "fa8bad85fba53bed704d001fcc87dc266c6dfa6ef8837c56eba2042c9a22e6ef"
+    },
+    {
+      "path": "data/scenarios/sources/pnad_real_income.receipt.json",
+      "bytes": 609,
+      "sha256": "dc52e3110c04b8b5899d039216a260d879302c21e36ccbb810e8e51f0cc43ab1"
+    },
+    {
+      "path": "data/scenarios/sources/pnad_real_mass.json.gz",
+      "bytes": 1776,
+      "sha256": "19ac4e40983b65bf406c7ad4a6fb3883a44124a30f23dd3ed6e112bb70b1eb34"
+    },
+    {
+      "path": "data/scenarios/sources/pnad_real_mass.receipt.json",
+      "bytes": 607,
+      "sha256": "4c4e08f32025393415e7231acb26107b1520cc9d523e1377e940c1e59af3fb80"
+    },
+    {
+      "path": "data/scenarios/sources/senatran.receipt.json",
+      "bytes": 423,
+      "sha256": "8e2040084ee59e6c0af02b7b2894bf6bc08810a69b396c6410beb1b58943991f"
+    },
+    {
+      "path": "data/scenarios/sources/senatran_2026_09.xlsx",
+      "bytes": 737420,
+      "sha256": "889d133da1ee2c301ad9a3e6b41b24fbb94286b4ba483c15cb706775bef5e16a"
+    },
+    {
+      "path": "index.html",
+      "bytes": 6271959,
+      "sha256": "ff6cd6fea8505edc5e7ad97cab9977ad9be9fbef6f17514aae6f6155a94841ab"
+    },
+    {
+      "path": "scripts/audit-animation-history.cjs",
+      "bytes": 11043,
+      "sha256": "8da1ec0ce9a7d2ccbfcae3618fab1a0eaad184ea37c0ebf0847743425ed126bb"
+    },
+    {
+      "path": "scripts/build-animations.py",
+      "bytes": 2519,
+      "sha256": "2d1cc548bf45681bc329abcbbb9c125c00c857926985b46b127595da7bf4d280"
+    },
+    {
+      "path": "scripts/build-catalog.py",
+      "bytes": 2444,
+      "sha256": "491de649da68b6f89850189ee9eeaf729e38035eb36fbe9b55bc2981580c5a6a"
+    },
+    {
+      "path": "scripts/build-evolution.py",
+      "bytes": 984,
+      "sha256": "b58001ebc1fb669102796edc1691175aa2e8e22248e4d928b94b83340e22fc17"
+    },
+    {
+      "path": "scripts/build-interactive.py",
+      "bytes": 2109,
+      "sha256": "8ca955ba805e86b65b410a8332638834e89a43d12d0ceb5fac93f32bba8a3dde"
+    },
+    {
+      "path": "scripts/build-megapackage.py",
+      "bytes": 360,
+      "sha256": "a2865d47bf10164377053258de387dae9a90ae9b045ce621abadf2d423d348ad"
+    },
+    {
+      "path": "scripts/build-page-notes.py",
+      "bytes": 3472,
+      "sha256": "8bfb1379b5e0df81f7e48bcd99092a8857a90fc1e317f44d8b8cafa6967fde57"
+    },
+    {
+      "path": "scripts/build-performance-ui.py",
+      "bytes": 1742,
+      "sha256": "679f38fc1a9ec43c6b246ef463550198b79e84c5f8260872073bc0c8d393a07c"
+    },
+    {
+      "path": "scripts/build-performance.py",
+      "bytes": 1022,
+      "sha256": "d6be4f5d475900d147f8403362afb3b4881757e46e8efbeda26d13a856f93d86"
+    },
+    {
+      "path": "scripts/build-phases.py",
+      "bytes": 2568,
+      "sha256": "7c293ae1df099058792af8c800b913457d00aab9fdc909cbdb438bcbdeb0591a"
+    },
+    {
+      "path": "scripts/build-primary-map.py",
+      "bytes": 955,
+      "sha256": "329554817fd09fa4601fb3cad12b880bbef6c4b6994e8ecd850e3535975aa454"
+    },
+    {
+      "path": "scripts/build_catalog_population.py",
+      "bytes": 1544,
+      "sha256": "989dbcf981c5ed9de5d28ea7fa9a76fc5a47e57cbebbfab78548b7a897c6aacc"
+    },
+    {
+      "path": "scripts/package-catalog.py",
+      "bytes": 2206,
+      "sha256": "d0cacccfb502eb2e6dabc59cce0f6e99484d0f58a2a5c285732cf0c3b32d5594"
+    },
+    {
+      "path": "scripts/package-megapackage.py",
+      "bytes": 4776,
+      "sha256": "c36905c738514501cd0dccd91b3782cc152e3363a4a3f4fc6a35016c63493c89"
+    },
+    {
+      "path": "scripts/phase1_sources.py",
+      "bytes": 23250,
+      "sha256": "4f68992d98e54c2da418ad4997e801374896cf0d088957209a045c6ba4bb2f9c"
+    },
+    {
+      "path": "scripts/phase23_models.py",
+      "bytes": 41896,
+      "sha256": "b12e029d09d49f3863521f89214e18090c2cba5990ccc81745b34cd1aaaa8f3f"
+    },
+    {
+      "path": "scripts/phase2_regional.py",
+      "bytes": 5974,
+      "sha256": "df56933728551f66b94cec539348762b8249c3a9a13d72d882156f9c3ea20425"
+    },
+    {
+      "path": "scripts/phase3_hierarchy.py",
+      "bytes": 25263,
+      "sha256": "2935191cec82a475c8f4f023cab23112dc61e903f22a458c69fabf04e4e534bc"
+    },
+    {
+      "path": "scripts/phase3_spatial.py",
+      "bytes": 26079,
+      "sha256": "caad4ffc927ec86c3ff3f03db71f53c6930387c1f01d5dba0cfe9d167d4f4532"
+    },
+    {
+      "path": "scripts/requirements-scenarios.txt",
+      "bytes": 117,
+      "sha256": "218a9497ef76c9eba2c8327db7f3c72ac4c6a226d486bc0d53faa8239235b1d9"
+    },
+    {
+      "path": "src/animations-charts.css",
+      "bytes": 7456,
+      "sha256": "cf588fb24ebdce845c667c262276aaba3c0508a6e4db5711547bb584e6edd153"
+    },
+    {
+      "path": "src/animations-charts.js",
+      "bytes": 28945,
+      "sha256": "fdf0700a150a6ecb89b2a53e0e77142c6d6438fa2858295f334595c6501d98c3"
+    },
+    {
+      "path": "src/animations-data.js",
+      "bytes": 22942,
+      "sha256": "35c5da0ca780b7ac88c74e944724e4b3d5498756dd0736390f0bff2600d0f678"
+    },
+    {
+      "path": "src/animations-maps.css",
+      "bytes": 4489,
+      "sha256": "a9cc3fbe24f2e20612d55867d0dc71f98dd00bfcec5b76a3f201024cbeea9556"
+    },
+    {
+      "path": "src/animations-maps.js",
+      "bytes": 22487,
+      "sha256": "ea9bb75c711df81fae123de26cb8c55c52dcd2cb11a6340e47967309977b72e2"
+    },
+    {
+      "path": "src/animations-worker.js",
+      "bytes": 19602,
+      "sha256": "541d2d228271f714c1f256bd152d39b13e0983703422eff9dddc52ace784e05a"
+    },
+    {
+      "path": "src/animations.css",
+      "bytes": 2814,
+      "sha256": "47c1f39455c3bf0d24d243f4a47df17719c8b294487cb74c5a8b5028362313ff"
+    },
+    {
+      "path": "src/animations.js",
+      "bytes": 16810,
+      "sha256": "5fae26c37c7b5bbf8ced6ae24db9d0ecc26e7a71a2c790bad073443d67c86217"
+    },
+    {
+      "path": "src/catalog-charts.css",
+      "bytes": 1417,
+      "sha256": "6126539c7bce8676640b77ec4b291fb881bedf9fe2b3bfaf7c4640a67af86dc2"
+    },
+    {
+      "path": "src/catalog-charts.js",
+      "bytes": 22988,
+      "sha256": "e5fa6d65c16628af0a5b0a728599be49cbb145bf4b450a40609ef4b4685bb6ec"
+    },
+    {
+      "path": "src/catalog-maps.css",
+      "bytes": 2259,
+      "sha256": "7482dae671acd95f02e4ec4ff1a0111ac0c99f2ff94b4af3c2c7fc32dd3ee2a6"
+    },
+    {
+      "path": "src/catalog-maps.js",
+      "bytes": 30287,
+      "sha256": "8c877f97411cab6e8b30f306af0bddbd84df2c572fe5c891b85ee43c8ca700dc"
+    },
+    {
+      "path": "src/catalog-themes.css",
+      "bytes": 4951,
+      "sha256": "45fa7a3082129e0d4e889139816785b22f39fc60fe674110966e23ffa301dc55"
+    },
+    {
+      "path": "src/catalog-themes.js",
+      "bytes": 4903,
+      "sha256": "aa13ceb1d6e6f0d135139d79a69f38ecca2d70a44b1a20192fe9d68a1fd43d0a"
+    },
+    {
+      "path": "src/catalog-workspace.css",
+      "bytes": 1611,
+      "sha256": "c1ca1426d4cb6b2f77d011d422b27ced74c8f9fd3dd153a928c9f2ed277a16f8"
+    },
+    {
+      "path": "src/catalog-workspace.js",
+      "bytes": 14202,
+      "sha256": "fdfc44294018f40808e96c6912b8f356653b632143146c4c8a2d623c6bc1dcb3"
+    },
+    {
+      "path": "src/evolution-brush.css",
+      "bytes": 2866,
+      "sha256": "8f7b53d13a5ea9e79838ee1995fe4428cf1f919a6e9c59fc8210399c5885b779"
+    },
+    {
+      "path": "src/evolution-brush.js",
+      "bytes": 11237,
+      "sha256": "5a68def25ab58f6b894ed50677335d8ef9734b168112da3f3c0fbfecaa318de9"
+    },
+    {
+      "path": "src/evolution-market-worker.js",
+      "bytes": 59245,
+      "sha256": "f01376c83697f9f4cb41af0828330bf12b6245c02317ce8e639c989e8626c50a"
+    },
+    {
+      "path": "src/evolution-years.css",
+      "bytes": 1655,
+      "sha256": "e4927ffc75882e2544d7132b2df44c02141320fb572f503de34440a15c725255"
+    },
+    {
+      "path": "src/evolution-years.js",
+      "bytes": 10064,
+      "sha256": "94288ecb5714a6840d6e7df3856cf73c1e3827578e299b1163686f2edf0546cc"
+    },
+    {
+      "path": "src/navigation.js",
+      "bytes": 5205,
+      "sha256": "612fc54512fdbccbdfadea79ba9295dcd760cf8cb6ea0263a121148e8a1bae4d"
+    },
+    {
+      "path": "src/page-notes.css",
+      "bytes": 2596,
+      "sha256": "108c675fa5caf245aad302f41707d8c2d78b07163a1d7a74afeb54fb0d7f13be"
+    },
+    {
+      "path": "src/page-notes.js",
+      "bytes": 5008,
+      "sha256": "b07f5579dd1c9ddc56caa5ea4920d9a89d30f2e89c8ebfd1180268207b6aa618"
+    },
+    {
+      "path": "src/performance-cache.js",
+      "bytes": 11393,
+      "sha256": "b23d5d964aeb3a005081fb26185c750e00fe83883526bfd81c93cdd125cc4bcc"
+    },
+    {
+      "path": "src/performance-ui.js",
+      "bytes": 2486,
+      "sha256": "a183c46396f990d91dc9227814aad4955d091d9afbf68d8c8b9796806a794a01"
+    },
+    {
+      "path": "src/primary-map-state.js",
+      "bytes": 2507,
+      "sha256": "2d506a0feec9e5490db9842ec1688e8083c8b5430958cb7df362b3a5b6deb46e"
+    },
+    {
+      "path": "src/primary-map.css",
+      "bytes": 6858,
+      "sha256": "983deeab3a24635fab6a56ccd28381fc144b6edab7ed9a80f51f67fe7e7c91a1"
+    },
+    {
+      "path": "src/primary-map.js",
+      "bytes": 20213,
+      "sha256": "51769f7eaa1f0ec1ab3f8be87cd1bfaa4d2bf803c88d89730b4fe5e456ea563b"
+    },
+    {
+      "path": "src/query-service.js",
+      "bytes": 3340,
+      "sha256": "534e06013ca66675746d8be77fc91b98aba370f89da85eac80ee8e4164def1a5"
+    },
+    {
+      "path": "src/scenarios.css",
+      "bytes": 5977,
+      "sha256": "18a9c1d01a27b5d7fb85a6240be60f5bc143680ad0eb81ebb3a42841f1fba322"
+    },
+    {
+      "path": "src/scenarios.js",
+      "bytes": 114831,
+      "sha256": "54ddf50f997c2d18bb4432e3a5a2b633d0037501e312e9ad3f75567d7e08fddc"
+    },
+    {
+      "path": "tests/animations-charts.test.cjs",
+      "bytes": 10189,
+      "sha256": "5044655b2993c4ac9b0f2f39a5e40552412608865461e01596b5024006c95c82"
+    },
+    {
+      "path": "tests/animations-data.test.cjs",
+      "bytes": 15175,
+      "sha256": "0406b030eb11bbe6e07939cbced81bc1b91e38edec3290334b12e8ce8656b851"
+    },
+    {
+      "path": "tests/animations-integration.test.cjs",
+      "bytes": 2969,
+      "sha256": "2ebc6cf54bfd04deacc0fb4c4b8124048b5712f31755ecdc24fcf06ecfe30814"
+    },
+    {
+      "path": "tests/animations-maps.test.cjs",
+      "bytes": 14364,
+      "sha256": "6bd6fc8c504b234533ddbfdd809cfad707b83fd29a8af6e73097c2f2ab4ff2d9"
+    },
+    {
+      "path": "tests/animations-month-cache-real.test.cjs",
+      "bytes": 1826,
+      "sha256": "e335a4e0ea808d72047bc4d2e35e13c6c6e8782f98075b7ff44801a5fad96efc"
+    },
+    {
+      "path": "tests/animations-month-cache.test.cjs",
+      "bytes": 7486,
+      "sha256": "27a4d748b361da634590de794a79cd935c0fc3fb26786fc95779ab72f727cba4"
+    },
+    {
+      "path": "tests/animations-player.test.cjs",
+      "bytes": 3960,
+      "sha256": "ad1af2266ef1b3e19f41fcbfbcdf1053dc7da7f32b2c207a9c029c69aa7c7a55"
+    },
+    {
+      "path": "tests/animations-real-source.test.cjs",
+      "bytes": 4805,
+      "sha256": "d5b6e3371ad618b82082539b983ef39af84f75c63edd116eeba8b8bb50015c97"
+    },
+    {
+      "path": "tests/animations-worker.test.cjs",
+      "bytes": 6395,
+      "sha256": "ed909c4ff6f80f937ca419f80c210b90fc22d624cba1c76a4e38ac47081769ff"
+    },
+    {
+      "path": "tests/animations-workspace.test.cjs",
+      "bytes": 4940,
+      "sha256": "c8f9d8bfb6550b20ccffe31fce355017e6c6257fca714c1570641e298250cb08"
+    },
+    {
+      "path": "tests/blue-theme.test.cjs",
+      "bytes": 3324,
+      "sha256": "17b960046a843bba28f251f5f7c3f7aa18c4e20f66a8637e378c261f139a034b"
+    },
+    {
+      "path": "tests/catalog-charts.test.cjs",
+      "bytes": 10459,
+      "sha256": "b2dbc4dbd5db1b3889946540ffda6c10ebf415361cedc99f5de91faa2f8c742d"
+    },
+    {
+      "path": "tests/catalog-maps.test.cjs",
+      "bytes": 9070,
+      "sha256": "6f6ec1bd73063fa11a7fbee4abcd51d2114ca252a770c9900f8f0d6189997aa1"
+    },
+    {
+      "path": "tests/catalog-real-source.test.cjs",
+      "bytes": 2484,
+      "sha256": "573d511ca259a6602cf9da8d1dfc360a8bfadb04aae32f47a3dc1ca15a14bbab"
+    },
+    {
+      "path": "tests/catalog-themes.test.cjs",
+      "bytes": 4793,
+      "sha256": "3a177ac68dd7c83d1554b4636e066669eb4eaa64d344bae97fc402abfbc134e4"
+    },
+    {
+      "path": "tests/catalog-worker.test.cjs",
+      "bytes": 6563,
+      "sha256": "f307d7a1aa38fdded3934d618418b4537d4e601b786e51e61c81f8eb77712f24"
+    },
+    {
+      "path": "tests/catalog-workspace.test.cjs",
+      "bytes": 3019,
+      "sha256": "f9ebb8287b341f874de76074fe9a9c21a3ffc270548ef697c1cd4b173b76c829"
+    },
+    {
+      "path": "tests/compact-navigation.test.cjs",
+      "bytes": 3388,
+      "sha256": "7c29b90b7c1578d135b777adfc4a55d1e48ef7532530cb28be40dab71c34f932"
+    },
+    {
+      "path": "tests/composition-selector.test.cjs",
+      "bytes": 2968,
+      "sha256": "a15a00aa48d3dc22506ee0450e9300f30433f997adee96225bfbce15b2a8fd79"
+    },
+    {
+      "path": "tests/evolution-brush.test.cjs",
+      "bytes": 3585,
+      "sha256": "487dc12b789b7933f31a6408667f3ebbf5de9eab86ba754eb90a3d844203a21c"
+    },
+    {
+      "path": "tests/evolution-years.test.cjs",
+      "bytes": 5741,
+      "sha256": "fc9488483e775a17b9bc7d0ab26e90693e62a45ecae4c60b293b8c57b5304e99"
+    },
+    {
+      "path": "tests/header-gap.test.cjs",
+      "bytes": 2078,
+      "sha256": "596585bb36f1f1e22d9340896c17f11f22fb07d4d2ba5994e67b61e40cf77953"
+    },
+    {
+      "path": "tests/interactive-real-source.test.cjs",
+      "bytes": 5092,
+      "sha256": "7bcaac72838140e6232d36a2b9c00c119db1dc5bc154e016d9055d58af013645"
+    },
+    {
+      "path": "tests/interactive-worker.test.cjs",
+      "bytes": 5533,
+      "sha256": "83043b531e1b1d16cf8d07d8e6ddc469c0d37c0da36f04114c9e8ed00159a6c3"
+    },
+    {
+      "path": "tests/monthly-aggregate-cache-real.test.cjs",
+      "bytes": 4551,
+      "sha256": "8f4401b524a0aed00f5b0539fa59d8ca8ef747280b51e86e4a93ab696a271da9"
+    },
+    {
+      "path": "tests/monthly-aggregate-cache.test.cjs",
+      "bytes": 7799,
+      "sha256": "4169dfef74d85c36f21dee60eea20f1b766eced6c022d36f82fc264f82ba7f9d"
+    },
+    {
+      "path": "tests/navigation.test.cjs",
+      "bytes": 4774,
+      "sha256": "42e99d37a98194bc365312076b852debfdf3fde6af848cb94e2c64c506d51fe5"
+    },
+    {
+      "path": "tests/page-notes.test.cjs",
+      "bytes": 5265,
+      "sha256": "88800bed647cafb8106b3f23c084f5085be82baa3628ec54bc1db105b134d78f"
+    },
+    {
+      "path": "tests/performance-cache.test.cjs",
+      "bytes": 8829,
+      "sha256": "f30f7d1e08a500d532a5049a67cb3d5b60c414cc4e9d90e8cbb323f1ff6506fa"
+    },
+    {
+      "path": "tests/performance-ui-build.test.py",
+      "bytes": 1001,
+      "sha256": "6ebf56677c89ae202531ad07653aed96b3388477a85419d9677ced8c37484925"
+    },
+    {
+      "path": "tests/performance-ui.test.cjs",
+      "bytes": 3498,
+      "sha256": "1b122f41cf4d3162187e22246ace45864149285714077dcd93b4129e8af216fd"
+    },
+    {
+      "path": "tests/primary-map-state.test.cjs",
+      "bytes": 1618,
+      "sha256": "9144d576784368db6321b9465a3cfc540ddcd72d1af4f137684c96b6e5e057a7"
+    },
+    {
+      "path": "tests/primary-map.test.cjs",
+      "bytes": 14203,
+      "sha256": "5e36430f8370c590b1989ada1892ca3c575944bcaa496595dc947c2015ab75fc"
+    },
+    {
+      "path": "tests/query-service.test.cjs",
+      "bytes": 2012,
+      "sha256": "42e97986a63b1d44df7a21e2d15721c41d714f9add907cf7e70ef2f253c31599"
+    },
+    {
+      "path": "tests/scenarios-phases-ui.test.cjs",
+      "bytes": 18430,
+      "sha256": "eee3eac3d1ee7cf119ddfc4afaeb9b6ae547f1270ff9942d51eef917c087aff5"
+    },
+    {
+      "path": "tests/scenarios-ui.test.cjs",
+      "bytes": 6115,
+      "sha256": "6fc9e9ea958fe211b12023cc1ddc031df14573ec9c19806f2940d9c05b87df6e"
+    },
+    {
+      "path": "tests/territory-channels.test.cjs",
+      "bytes": 18969,
+      "sha256": "cbc9a7ba85a42dd693023d79559a9dfe7092d6d2ba4d8f3717f2f7f2e25aa341"
+    },
+    {
+      "path": "tests/test_phase1_sources.py",
+      "bytes": 11534,
+      "sha256": "9716a618f76ebc2c61e1fe9b7e212c2249dc9d4705e703a85db4e6ab60adb56b"
+    },
+    {
+      "path": "tests/test_phase23_models.py",
+      "bytes": 12762,
+      "sha256": "8b4a9d3de5cb4de3f817923deb7a03dda4ee03cda5f907a1e48015adffb951f6"
+    },
+    {
+      "path": "tests/test_phase2_regional.py",
+      "bytes": 1809,
+      "sha256": "bded382729bc88297ab7610d2ae94e35c7c57967a2b2997f4cd60d6d296a1bcb"
+    },
+    {
+      "path": "tests/test_phase3_hierarchy.py",
+      "bytes": 12919,
+      "sha256": "efa4f8371ee70726d9fdd11cc865db9cf63084337d3dbea19aa8a84f8f201659"
+    },
+    {
+      "path": "tests/test_phase3_spatial.py",
+      "bytes": 10298,
+      "sha256": "3c9a81122f9d44cd896886f78ae49f9851845ecc61fe8d05f81116af9191a9ba"
+    },
+    {
+      "path": "tests/test_phases_integration.py",
+      "bytes": 1417,
+      "sha256": "7ba7c3d24868ac5f14714d779b42b61a7ddf01a37d7630daaab686009faa9d4f"
+    }
+  ]
+}
