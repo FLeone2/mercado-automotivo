@@ -31,5 +31,6 @@
  }
  function clearSharedQueryServices(){for(const service of services.values())service.worker.terminate();services.clear();}
  root.createSharedQueryWorker=createSharedQueryWorker;
- if(typeof module!=='undefined')module.exports={createSharedQueryWorker,clearSharedQueryServices};
+ // Preserve the host authored module's exports object when embedded in a dashboard.
+ if(typeof module!=='undefined'&&module.exports)Object.assign(module.exports,{createSharedQueryWorker,clearSharedQueryServices});
 })(globalThis);

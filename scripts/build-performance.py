@@ -9,5 +9,12 @@ else:html=html.replace('function useMarketData(',block+'function useMarketData('
 a=html.index('function useMarketData(');b=html.index('function Empty(',a);hook=html[a:b]
 hook=hook.replace('new InlineCalculationWorker$1()',"createSharedQueryWorker(()=>new InlineCalculationWorker$1(),'market')") if "createSharedQueryWorker(" not in hook else hook
 hook=hook.replace("{type:'cancel',releaseCubes:true}","{type:'cancel'}")
-html=html[:a]+hook+html[b:];p.write_text(html)
+html=html[:a]+hook+html[b:]
+# Embedded UMD/CommonJS helpers may assign module.exports. The authored content
+# owns its original exports object; restore that identity at its final boundary.
+anchor='exports.DashboardContent = DashboardContent;'
+guard='// Restore authored exports after embedded CommonJS helper initialization.\nif(typeof module!=="undefined")module.exports = exports;\n'
+assert html.count(anchor)==1,'Authored module export boundary changed'
+if guard not in html:html=html.replace(anchor,guard+anchor,1)
+p.write_text(html)
 subprocess.run([sys.executable,str(root/'scripts/build-performance-ui.py')],check=True)

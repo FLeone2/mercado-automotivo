@@ -1,0 +1,49 @@
+{
+  "purpose": "restore_authored_dashboard_bootstrap_and_restricted_storage_fallback",
+  "deploymentReported": "14c6ead11860b0f62e0ac36ce1d5187bff8add62",
+  "noSourceDataChanged": true,
+  "nodeTestsPassed": 120,
+  "browserVisualQA": "not_run_chromium_socket_restriction",
+  "files": [
+    {
+      "path": "index.html",
+      "bytes": 6272869,
+      "sha256": "fe2908effe97ade076aa19b4ccb5eedb4e320021b1e340de4be716ba4de31665"
+    },
+    {
+      "path": "_headers",
+      "bytes": 877,
+      "sha256": "633b7651f5d41111163f9c79db27b3c6b94629eefa43838b461fe4c88a161df7"
+    },
+    {
+      "path": "src/query-service.js",
+      "bytes": 3456,
+      "sha256": "a382a49412834d525ae35dfa698cede2f66a0e9c54eca6782dec3e63d0027222"
+    },
+    {
+      "path": "src/performance-cache.js",
+      "bytes": 11720,
+      "sha256": "cbc225743a1c3acec66aa36c884ea16b4ef73ae4a7d361d1799ad5079fda00d0"
+    },
+    {
+      "path": "scripts/build-performance.py",
+      "bytes": 1513,
+      "sha256": "106987be8def78565f1fa3ebd7e205d2eb5ab2c9b3b67a5e88d859da4b53195d"
+    },
+    {
+      "path": "tests/dashboard-bootstrap.test.cjs",
+      "bytes": 1765,
+      "sha256": "cfa407716374c03c995c72eca1918db1284b9850f9cf087c7dd4a4f0bdb387a9"
+    },
+    {
+      "path": "tests/performance-cache.test.cjs",
+      "bytes": 9746,
+      "sha256": "b1c32108515a43b1aa86829d8e3c082bb34cf5e85d11c90370bddcd02b26ac3a"
+    },
+    {
+      "path": "HOTFIX_STARTUP.md",
+      "bytes": 1677,
+      "sha256": "47de3b99931f56ea2ae8d3122592f1feea422d9984366ed23701e5141977817a"
+    }
+  ]
+}

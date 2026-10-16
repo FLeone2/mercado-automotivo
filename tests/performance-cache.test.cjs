@@ -183,3 +183,18 @@ test('an in-flight disk read cannot repopulate memory after clear', async () => 
   assert.equal(c.stats().entries, 0);
   assert.equal(await create({namespace: 'read-race'}).get('a'), undefined);
 });
+
+
+test('restricted IndexedDB getter never prevents cache or worker startup', async () => {
+  const context = vm.createContext({module: {exports: {}}, structuredClone, setTimeout, clearTimeout});
+  vm.runInContext("Object.defineProperty(globalThis, 'indexedDB', {get() { const error = new Error('Storage access denied'); error.name = 'SecurityError'; throw error; }});", context);
+  vm.runInContext(source, context);
+  const c = vm.runInContext("PerformanceCache.createPersistentCache({namespace: 'restricted-storage'})", context);
+  assert.equal(c.stats().persistent, false);
+  assert.equal(c.stats().lastError, 'SecurityError');
+  assert.equal(await c.set('a', 1), true);
+  assert.equal(await c.get('a'), 1);
+  context.self = {postMessage() {}};
+  vm.runInContext(fs.readFileSync(require.resolve('../src/evolution-market-worker.js'), 'utf8'), context);
+  assert.equal(typeof context.self.onmessage, 'function');
+});

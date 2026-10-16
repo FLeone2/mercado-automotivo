@@ -63,7 +63,11 @@
     if (!states.has(stateKey)) states.set(stateKey, { queue: Promise.resolve(), revision: 0, epoch: 0 });
     const state = states.get(stateKey);
     let revision = state.revision, memoryBytes = 0, database = null, opening = null;
-    let persistent = !!root.indexedDB, lastError = null;
+    // Accessing indexedDB itself can throw SecurityError in restricted storage
+    // contexts. Optional persistence must never prevent worker installation.
+    let indexedDB = null, persistent = false, lastError = null;
+    try { indexedDB = root.indexedDB; persistent = !!indexedDB; }
+    catch (error) { lastError = error && (error.name || error.message) || 'IndexedDB unavailable'; }
     const memory = new Map();
     const counters = { hits: 0, misses: 0, diskHits: 0, writes: 0, rejected: 0, evictions: 0 };
     const clone = value => {
@@ -96,7 +100,7 @@
         };
         const timer = setTimeout(() => finish(null, new Error('IndexedDB open timeout')), timeoutMs);
         try {
-          request = root.indexedDB.open(stateKey, SCHEMA_VERSION);
+          request = indexedDB.open(stateKey, SCHEMA_VERSION);
           request.onupgradeneeded = () => {
             if (!request.result.objectStoreNames.contains('entries')) request.result.createObjectStore('entries', { keyPath: 'key' });
             if (!request.result.objectStoreNames.contains('metadata')) request.result.createObjectStore('metadata', { keyPath: 'key' });
