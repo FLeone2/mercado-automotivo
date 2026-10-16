@@ -1,3 +1,4 @@
+const publishedSource=require('node:child_process').execFileSync('python',['scripts/build-page-notes.py','--source-only','src/evolution-views.js'],{cwd:require('node:path').join(__dirname,'..'),encoding:'utf8'});
 const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),assert=require('node:assert/strict');
 const root=path.join(__dirname,'..'),source=fs.readFileSync(path.join(root,'src/evolution-views.js'),'utf8'),css=fs.readFileSync(path.join(root,'src/evolution-views.css'),'utf8'),html=fs.readFileSync(path.join(root,'index.html'),'utf8');
 let states=[true,'count','stackedArea','',null],cursor=0;
@@ -19,5 +20,5 @@ for(const mode of ['stackedArea','stackedBar','volume','stackedArea']){
 }
 assert(css.includes('.ev-composition-mode.data-segmented-control{justify-self:start;width:fit-content;max-width:100%;box-sizing:border-box;overflow-x:auto}'));
 assert(css.includes('.ev-composition-mode.data-segmented-control button{flex:0 0 auto}'));
-assert(html.includes(source));assert(html.includes(css));
+assert(html.includes(publishedSource));assert(html.includes(css));
 console.log('PASS: composition selector compact/overflow styles, accessible label, repeated three-mode switching, chart mappings and unmodified values.');

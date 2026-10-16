@@ -1,0 +1,72 @@
+/* Segoe UI is resolved locally. No downloaded/embedded proprietary fonts.
+   Only presentation tokens and surfaces change; chart and fuel semantics stay intact. */
+:root {
+  --font-sans-default:"Segoe UI",SegoeUI,system-ui,-apple-system,BlinkMacSystemFont,Arial,sans-serif,"Segoe UI Emoji","Segoe UI Symbol" !important;
+  --font-sans:var(--font-sans-default) !important;
+}
+body, button, input, select, textarea, svg text,
+:root header[data-data-app-chrome=topbar],
+:root header[data-data-app-chrome=topbar] :is(strong,span,button,a) {
+  font-family:var(--font-sans) !important;
+}
+:root:is([data-app-theme="aqua-clean"],[data-app-theme="sage"],[data-app-theme="sand"],[data-app-theme="night-blue"],[data-app-theme="lavender"],[data-app-theme="graphite"],[data-app-theme="olive"],[data-app-theme="earth"],[data-app-theme="vista-aurora"],[data-app-theme="windows-xp"],[data-app-theme="windows-95"],[data-app-theme="blue-glass"]) {
+  --dashboard-background:var(--background);
+  --data-card-background:var(--surface);
+  --data-app-chrome-background:var(--surface);
+  --interaction-hover:var(--muted);
+  --interaction-active:var(--control-hover);
+  --catalog-primary-ink:var(--surface);
+}
+:root:is([data-app-theme="aqua-clean"],[data-app-theme="sage"],[data-app-theme="sand"],[data-app-theme="night-blue"],[data-app-theme="lavender"],[data-app-theme="graphite"],[data-app-theme="olive"],[data-app-theme="earth"],[data-app-theme="vista-aurora"],[data-app-theme="windows-xp"],[data-app-theme="windows-95"],[data-app-theme="blue-glass"]) .am-app::before {
+  background:radial-gradient(ellipse at 8% 6%,color-mix(in srgb,var(--accent) 9%,transparent),transparent 55%);
+}
+:root:is([data-app-theme="aqua-clean"],[data-app-theme="sage"],[data-app-theme="sand"],[data-app-theme="night-blue"],[data-app-theme="lavender"],[data-app-theme="graphite"],[data-app-theme="olive"],[data-app-theme="earth"],[data-app-theme="vista-aurora"],[data-app-theme="windows-xp"],[data-app-theme="windows-95"],[data-app-theme="blue-glass"]) :is(.am-small-button.am-primary,.am-period-chip[aria-pressed=true]) {
+  color:var(--catalog-primary-ink);background:var(--accent);border-color:var(--accent);
+}
+/* The same foreground/surface pair works in both appearances: dark palettes have
+   pale accents and dark surfaces, so button ink reverses without a second state. */
+:root[data-app-theme] :is(button,input,select,textarea,a,[tabindex]):focus-visible {
+  outline:2px solid var(--accent);outline-offset:2px;
+}
+:root:is([data-app-theme="vista-aurora"],[data-app-theme="blue-glass"]) {
+  --data-card-background:color-mix(in srgb,var(--surface) 95%,transparent);
+  --data-app-chrome-background:color-mix(in srgb,var(--surface) 97%,transparent);
+}
+:root[data-app-theme="vista-aurora"] .am-app::before {
+  background:radial-gradient(ellipse at 8% 4%,rgb(27 170 156 / 18%),transparent 52%),radial-gradient(ellipse at 88% 22%,rgb(42 119 228 / 16%),transparent 52%),linear-gradient(128deg,transparent 20%,rgb(106 198 166 / 8%) 45%,transparent 70%);
+}
+:root[data-app-theme="blue-glass"] .am-app::before {
+  background:radial-gradient(ellipse at 10% 5%,rgb(78 173 247 / 19%),transparent 55%),linear-gradient(145deg,transparent 25%,rgb(120 195 255 / 12%) 45%,transparent 65%);
+}
+:root[data-app-theme="windows-xp"] :is(.am-small-button,.am-period-chip) {
+  box-shadow:inset 0 1px 0 rgb(255 255 255 / 65%),inset 0 -1px 0 rgb(0 30 85 / 20%);
+  background-image:linear-gradient(rgb(255 255 255 / 8%),transparent);
+}
+:root[data-app-theme="windows-xp"] .am-app::before {
+  background:radial-gradient(ellipse at 12% 4%,rgb(49 117 214 / 15%),transparent 45%),radial-gradient(ellipse at 88% 22%,rgb(65 150 61 / 15%),transparent 50%);
+}
+:root[data-app-theme="windows-95"] {
+  --card-radius:2px;--data-card-radius:2px;--control-radius:2px;
+  --card-shadow:inset 1px 1px 0 rgb(255 255 255 / 60%),inset -1px -1px 0 rgb(0 0 0 / 35%);
+}
+:root[data-app-theme="windows-95"] :is(.am-small-button,.am-period-chip,.data-segmented-control) {
+  border-radius:2px;
+  box-shadow:inset 1px 1px 0 rgb(255 255 255 / 65%),inset -1px -1px 0 rgb(0 0 0 / 40%);
+}
+:root[data-app-theme="windows-95"] :is(.am-small-button,.am-period-chip):active {
+  box-shadow:inset 1px 1px 0 rgb(0 0 0 / 40%),inset -1px -1px 0 rgb(255 255 255 / 65%);
+}
+:root[data-app-theme="windows-95"] .am-app::before {
+  background:linear-gradient(135deg,rgb(0 128 128 / 13%),transparent 70%);
+}
+@media (prefers-reduced-transparency:reduce) {
+  :root[data-app-theme] {--data-card-background:var(--surface);--data-app-chrome-background:var(--surface)}
+  :root[data-app-theme] .am-glass {backdrop-filter:none;-webkit-backdrop-filter:none}
+}
+@media (prefers-reduced-motion:reduce) {
+  :root[data-app-theme] .am-app::before {animation:none;transition:none}
+}
+@media (forced-colors:active) {
+  :root[data-app-theme] .am-app::before {background:none}
+  :root[data-app-theme] :is(button,input,select,textarea,a,[tabindex]):focus-visible {outline-color:Highlight}
+}

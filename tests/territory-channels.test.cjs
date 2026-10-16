@@ -1,14 +1,16 @@
+const publishedSource=require('node:child_process').execFileSync('python',['scripts/build-page-notes.py','--source-only','src/territory-channels.js'],{cwd:require('node:path').join(__dirname,'..'),encoding:'utf8'});
 const fs = require('node:fs'), path = require('node:path'), vm = require('node:vm'), zlib = require('node:zlib'), assert = require('node:assert/strict'), { webcrypto } = require('node:crypto');
 const root = path.join(__dirname, '..'), html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const source = fs.readFileSync(path.join(root, 'src/territory-channels.js'), 'utf8');
 const geometry = JSON.parse(JSON.parse(html.match(/const value\$3 = JSON.parse\(("(?:[^"\\]|\\.)*")\)/)[1]));
-const workerSource = fs.readFileSync(path.join(root, 'src/evolution-market-worker.js'), 'utf8');
+const workerSource = fs.readFileSync(path.join(root, 'src/performance-cache.js'), 'utf8')+'\n'+fs.readFileSync(path.join(root, 'src/evolution-market-worker.js'), 'utf8');
 const embeddedWorker = [...html.matchAll(/new Blob\(\[("(?:[^"\\]|\\.)*")\]/g)].map(match => JSON.parse(match[1])).find(text => text.includes('installMarketWorker'));
 assert.equal(embeddedWorker, workerSource, 'The published worker must match its maintained source');
-assert(html.includes('// BEGIN TERRITORY CHANNELS\n' + source), 'Published component must match its maintained source');
+assert(html.includes('// BEGIN TERRITORY CHANNELS\n' + publishedSource), 'Published component must match its maintained source');
 assert(html.includes(fs.readFileSync(path.join(root, 'src/territory-channels.css'), 'utf8')));
 assert(html.indexOf('jsxRuntime.jsx(TerritoryChannelMap, { model, filters, scope,') > html.indexOf('id: "geo-uf-ranking"'));
-assert(html.indexOf('jsxRuntime.jsx(TerritoryChannelMap, { model, filters, scope,') < html.indexOf('id: "geo-municipal-map-heading"'));
+assert(html.includes("jsxRuntime.jsx(PrimaryMap, { id:'territories-primary-map'"));
+assert(html.indexOf('jsxRuntime.jsx(TerritoryChannelMap, { model, filters, scope,') < html.indexOf('id: "geo-municipal-heading"')); 
 
 let slots = [], cursor = 0;
 const React = { useMemo: fn => fn(), useState: initial => { const index = cursor++; if (!(index in slots)) slots[index] = initial; return [slots[index], value => slots[index] = typeof value === 'function' ? value(slots[index]) : value]; } };

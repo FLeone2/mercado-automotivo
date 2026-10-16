@@ -1,5 +1,5 @@
 // Registered leaf IDs are stable contracts for old links, favorites and history.
-const marketTabs=[{id:'dashboard',label:'Panorama',previousLabels:['Visão geral']},{id:'history',label:'Evolução'},{id:'competition',label:'Marcas e modelos'},{id:'ranking',label:'Ranking'},{id:'segments',label:'Estrutura BD'},{id:'structure',label:'Pirâmide BD'},{id:'technology',label:'Propulsão'},{id:'origin',label:'Origem'},{id:'geography',label:'Territórios',previousLabels:['Mapa do mercado']},{id:'explore',label:'Explorar'},{id:'models',label:'Cenários',previousLabels:['Modelos e cenários']},{id:'quality',label:'Dados e metodologia',previousLabels:['Dados e atualização']}];
+const marketTabs=[{id:'dashboard',label:'Panorama',previousLabels:['Visão geral']},{id:'history',label:'Evolução'},{id:'competition',label:'Marcas e modelos'},{id:'ranking',label:'Ranking'},{id:'segments',label:'Estrutura BD'},{id:'structure',label:'Pirâmide BD'},{id:'technology',label:'Propulsão'},{id:'origin',label:'Origem'},{id:'geography',label:'Territórios',previousLabels:['Mapa do mercado']},{id:'explore',label:'Explorar'},{id:'animations',label:'Animações'},{id:'models',label:'Cenários',previousLabels:['Modelos e cenários']},{id:'quality',label:'Dados e metodologia',previousLabels:['Dados e atualização']}];
 const marketNavigation=[
  {id:'dashboard',label:'Panorama',routes:['dashboard']},
  {id:'history',label:'Evolução',routes:['history']},
@@ -7,7 +7,8 @@ const marketNavigation=[
  {id:'segments',label:'Segmentos',routes:['segments','structure','technology','origin']},
  {id:'geography',label:'Territórios',routes:['geography']},
  {id:'explore',label:'Explorar',routes:['explore']},
- {id:'models',label:'Cenários',routes:['models']}
+ {id:'models',label:'Cenários',routes:['models']},
+ {id:'animations',label:'Animações',routes:['animations']}
 ];
 function navigationLocation(tab,explorationView){
  const leaf=tab==='explore'&&explorationView==='structure'?'structure':tab;

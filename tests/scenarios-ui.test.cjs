@@ -1,3 +1,4 @@
+const publishedSource=require('node:child_process').execFileSync('python',['scripts/build-page-notes.py','--source-only','src/scenarios.js'],{cwd:require('node:path').join(__dirname,'..'),encoding:'utf8'});
 const fs=require('node:fs'),assert=require('node:assert/strict');
 const html=fs.readFileSync('index.html','utf8'),source=fs.readFileSync('src/scenarios.js','utf8');
 const jsx=(type,props,key)=>({type,props:props??{},key});const React={useState:value=>[typeof value==='function'?value():value,()=>{}],useMemo:fn=>fn(),useEffect:()=>{}};
@@ -20,5 +21,5 @@ const first=Object.values(macro.lagCorrelations)[0];tree=api.ScenarioMacroScatte
 for(const [key,model] of Object.entries(load('forecasts').models)){const metrics=api.scenarioForecastMetrics(model);assert(metrics.some(r=>r.selected==='Selecionado na validação'));assert.equal(model.qualityStatus,'failed_validation');tree=api.ScenarioForecastFan({model,history:monthly.rows.map(r=>({month:r.month,value:r[key]})),title:key});assert.equal(all(tree).filter(n=>n.type==='polygon').length,2);assert.equal(all(tree).filter(n=>n.type==='circle').length,model.intervals.length);}
 assert(source.includes('Os filtros globais acima ficam guardados, mas não recalculam'));assert(source.includes('modelo exógeno de dois fatores validado'));assert(source.includes("legacy&&jsxRuntime.jsx(Phase2View,props)"));assert(html.includes("tab==='models'?jsxRuntime.jsx(ScenarioWorkspace,"));
 for(const [id,file] of [['scenarios-styles','src/scenarios.css'],['evolution-views-styles','src/evolution-views.css'],['market-navigation-styles','src/navigation.css']]){const marker='<style id="'+id+'">';assert.equal(html.split(marker).length-1,1);const embedded=html.split(marker)[1].split('</style>')[0];assert.equal(embedded.trim(),fs.readFileSync(file,'utf8').trim());assert(!embedded.includes('<style'));}
-assert.equal(html.split('</head>').length-1,1);assert(html.includes(source.trim()));
+assert.equal(html.split('</head>').length-1,1);assert(html.includes(publishedSource.trim()));
 console.log('PASS: five Cenários tabs; real-source composition conservation, monthly quantiles, 5,400+ matched GDP/population, projected 3D polygon/height geometry at three rotations, keyboard/hover marks, macro heatmap/scatter pairs, experimental forecast bands, frozen-filter guard, and all integrated stylesheet embeddings.');

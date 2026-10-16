@@ -1,0 +1,91 @@
+const assert=require('node:assert/strict');
+const fs=require('node:fs'),path=require('node:path'),zlib=require('node:zlib');
+const C=require('../src/animations-charts.js');
+const row=(name,count,priorCount,extra={})=>({name,count,priorCount,mitCount:0,brands:{[name]:count},...extra});
+const frame=(month,rows,extra={})=>({month,total:rows.reduce((s,r)=>s+(r.count??0),0),complete:true,coverageStatus:'complete',groups:{marca:rows,modelo:rows,uf:rows},...extra});
+const a=frame('2025-01',[row('B',60,40),row('A',60,30),row('MITSUBISHI',20,10,{mitCount:20,isMIT:true})]);
+const b=frame('2025-02',[row('A',20,40),row('B',80,20),row('MITSUBISHI',30,0,{mitCount:30,isMIT:true})]);
+const ranked=C.animationRankRows(a,'marca',{topN:1,pinMIT:true});
+assert.deepEqual(ranked.display.map(r=>r.name),['A','MITSUBISHI']);
+assert.deepEqual(ranked.all.map(r=>r.rank),[1,1,3]);
+assert.equal(ranked.pinned[0].rank,3);assert.equal(ranked.excluded,1);
+assert.equal(ranked.all[0].share,60/140,'Share denominator includes excluded entities.');
+assert.equal(C.animationEntityColor('MITSUBISHI',a.groups.marca[2]),'var(--mitsubishi-color, #ed1c24)');
+assert.equal(C.animationEntityColor('B',a.groups.marca[0]),C.animationEntityColor('B',b.groups.marca[1]));
+assert.equal(C.animationRankRows(frame('2025-01',[row('MIT-LIKE',20,10,{brands:{TOYOTA:20}})]),'modelo',{topN:1,pinMIT:true}).pinned.length,0,'Names do not imply Mitsubishi membership.');
+const mixed=frame('2025-03',[row('FIRST',50,40),row('SHARED GROUP',30,20,{brands:{MITSUBISHI:10,OTHER:20},mitCount:10,isMIT:true})]);
+assert.equal(C.animationRankRows(mixed,'modelo',{topN:1,pinMIT:true}).pinned[0].name,'SHARED GROUP');
+assert.notEqual(C.animationEntityColor('SHARED GROUP',mixed.groups.modelo[1]),'var(--mitsubishi-color, #ed1c24)','Mixed groups do not falsely turn fully Mitsubishi red.');
+const u=frame('2025-01',[row('SP',100,90,{mitCount:5}),row('MG',40,30,{mitCount:10})]);
+assert.equal(C.animationRankRows(u,'uf',{metric:'mitCount',topN:1}).display[0].name,'MG');
+assert.equal(C.animationLeadershipRows([u],'uf','mitCount')[0].leader,'MG');
+assert.equal(C.animationLeadershipRows([u],'uf','mitCount')[0].margin,5);
+const pool=C.animationRacePool([a,b],'marca',{topN:1,pinMIT:true});
+assert.deepEqual(pool.rows.map(r=>r.name),['A','B','MITSUBISHI']);assert.equal(pool.slots,2);assert.equal(pool.max,80);
+const bubbles=C.animationBubbleRows(b,'marca');
+assert.equal(bubbles.find(r=>r.name==='B').yoy,3);assert.equal(bubbles.find(r=>r.name==='MITSUBISHI').yoy,null);
+assert.equal(C.animationBubbleRows(frame('2025-03',[row('NEW',10,null)]),'marca')[0].yoy,null);
+assert.equal(C.animationBubbleRows(frame('2025-03',[row('ZERO',0,10)]),'marca')[0].yoy,-1);
+const scales=C.animationBubbleScales([a,b],'marca');
+assert(scales.x[1]>=80/130);assert(scales.y[0]<=-.5);assert(scales.y[1]>=3);
+const manyRows=Array.from({length:1001},(_,i)=>row('ENTITY '+i,i+1,1));
+const manyFrames=Array.from({length:201},(_,i)=>frame('20'+String(i).padStart(2,'0')+'-01',manyRows));
+assert.equal(C.animationBubbleScales(manyFrames,'marca').maxCount,1001,'Over 200,000 rows use loop-based extrema, never argument spreading.');
+const large=C.animationBubblePoint({x:.2,y:0,count:80},scales),small=C.animationBubblePoint({x:.2,y:0,count:20},scales);
+assert.equal(large.r/small.r,2,'Radius uses sqrt(volume); bubble area encodes volume.');
+const missing={...a,month:'2025-03',complete:false,total:null,coverageStatus:'missing'};
+assert.equal(C.animationRankRows(missing,'marca',{topN:10}).display.length,0);
+assert(C.animationBubbleRows(missing,'marca').every(r=>r.yoy===null&&r.count===null));
+const trailFrames=Array.from({length:7},(_,i)=>frame('2025-'+String(i+1).padStart(2,'0'),[row('A',i+1,1)]));
+trailFrames[3]={...trailFrames[3],complete:false,total:null};
+const trails=C.animationTrail(trailFrames,6,'A','marca',C.animationBubbleScales(trailFrames,'marca'));
+assert.equal(trails.length,2,'Null coverage splits the trail.');assert.equal((trails.join(' ').match(/L/g)||[]).length,3,'Only last six frames enter the trail.');
+const tech={...a,total:100,groups:{propulsao:[row('ICE',70),row('BEV',20),row('Não classificado',10)]}};
+const techRows=C.animationMixRows(tech,'technology');
+assert.equal(techRows.reduce((s,r)=>s+r.count,0),100);assert.equal(techRows.reduce((s,r)=>s+r.share,0),.9999999999999999);
+assert.deepEqual(C.animationMixOrder([tech],'technology').slice(0,5),['ICE','HEV','PHEV','BEV','MHEV']);
+assert.equal(C.animationMixRows({...tech,groups:{propulsao:[row('ICE',90)]}},'technology').find(r=>r.name==='Não informado · residual').count,10);
+assert.equal(C.animationMixRows({...tech,groups:{propulsao:[row('ICE',null)]}},'technology').some(r=>r.name==='Não informado · residual'),false,'Null classification never becomes a numeric residual.');
+const origins={...a,total:100,originRows:[{name:'Marcas chinesas',kind:'china',count:30},{name:'Origem não classificada',kind:'unknown',count:70}],groups:{bd_origem:[row('IMP',70),row('LOCAL',30)]}};
+assert.equal(C.animationMixRows(origins,'origin')[0].count,30);assert.equal(C.animationMixRows(origins,'vehicleOrigin')[0].count,70,'Chinese-brand origin and IMP / LOCAL are independent.');
+const leader=C.animationLeadershipRows([a,b,missing]);
+assert(leader[0].tie);assert.deepEqual(leader[0].leaders,['A','B']);assert.equal(leader[0].margin,0);assert.equal(leader[1].margin,50);assert.equal(leader[2].leader,null);
+assert.equal(C.animationLeadershipRows([frame('2025-01',[row('ONLY',10,8)])])[0].margin,null);
+assert.equal(C.animationChartRows({frames:[a],topN:1,pinMIT:true}).length,3,'Exports include rows beyond Top N.');
+assert.equal(C.animationChartRows({view:'bubbles',frames:[b]})[2].priorCount,0);
+
+// Render the real components with the same lightweight JSX runtime contract as the app.
+global.React={useMemo:fn=>fn()};global.jsxRuntime={jsx:(type,props,key)=>({type,props,key}),jsxs:(type,props,key)=>({type,props,key})};
+const walk=n=>n&&typeof n==='object'?[n,...[n.props?.children].flat(Infinity).flatMap(walk)]:[];
+const raceA=walk(C.AnimationRace({frames:[a,b],frame:a,topN:1,pinMIT:true})),raceB=walk(C.AnimationRace({frames:[a,b],frame:b,topN:1,pinMIT:true}));
+const nodes=tree=>tree.filter(n=>n.props?.className?.startsWith('ac-race-row'));
+assert.deepEqual(nodes(raceA).map(n=>n.key),nodes(raceB).map(n=>n.key),'Entity keys and mounted pool persist across frames.');
+assert.equal(new Set(nodes(raceA).filter(n=>n.props.style.opacity===1).map(n=>n.props.style.transform)).size,2,'Displayed bars receive distinct slot transforms in the component lookup.');
+assert.notEqual(nodes(raceA).find(n=>n.key==='A').props.style.transform,nodes(raceB).find(n=>n.key==='A').props.style.transform,'Rank animation changes transform, not only labels.');
+assert.notEqual(raceA.find(n=>n.props?.className==='ac-race-bar').props.style.width,raceB.find(n=>n.props?.className==='ac-race-bar').props.style.width,'Volumes animate actual bar widths.');
+for(const component of [C.AnimationBubbles,C.AnimationMix,C.AnimationLeadership])assert.doesNotThrow(()=>component({frames:[a,b],frame:b}));
+let clicked=null;const ribbon=walk(C.AnimationLeadership({frames:[a,b],frame:a,onSelect:i=>clicked=i}));ribbon.filter(n=>n.type==='button')[1].props.onClick();assert.equal(clicked,1);
+let opened=false;global.React.useState=()=>[opened,v=>opened=v];
+const tableElement=raceA.find(n=>typeof n.type==='function'&&n.type.name==='AnimationChartTable');
+let table=tableElement.type(tableElement.props);assert.equal(walk(table).filter(n=>n.type==='table').length,0,'Closed exact tables avoid rebuilding thousands of cells during playback.');
+table.props.onToggle({currentTarget:{open:true}});table=tableElement.type(tableElement.props);assert.equal(walk(table).filter(n=>n.type==='tbody')[0].props.children.length,3,'Expanding the table reveals all exact source rows.');
+const css=fs.readFileSync(path.join(__dirname,'../src/animations-charts.css'),'utf8');
+assert(css.includes('prefers-reduced-motion:reduce'));assert(css.includes('transition:none!important'));assert(css.includes('overflow-x:auto'));assert(css.includes('transition:transform'));
+
+// Real, reviewed source cube catches data contract mistakes (especially weighted brands objects).
+const D=require('../src/animations-data.js');const manifest=JSON.parse(fs.readFileSync(path.join(__dirname,'../data/manifest.json'),'utf8'));
+const meta=manifest.months.find(m=>m.month==='2026-09')??manifest.months.at(-1);
+const cube=JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(__dirname,'../data',meta.cubePath))));
+const real=D.aggregateCube(cube,meta,{filters:{population:'light'},dimension:'marca',selectedUF:'SP',preset:'all'});
+assert.equal(real.total,meta.lightVehicleRows);assert.equal(typeof real.groups.marca[0].brands,'object');
+for(const dimension of ['marca','modelo','grupo_modelo','uf']){
+ const r=C.animationRankRows(real,dimension,{topN:10,pinMIT:true,metric:dimension==='uf'?'mitCount':'count'});
+ assert(r.display.length>=10);assert.equal(r.all.reduce((s,r)=>s+r.count,0),real.total);
+ assert.doesNotThrow(()=>C.AnimationRace({frames:[real],frame:real,dimension,topN:10,pinMIT:true,metric:dimension==='uf'?'mitCount':'count'}));
+ assert.doesNotThrow(()=>C.AnimationLeadership({frames:[real],frame:real,dimension,metric:dimension==='uf'?'mitCount':'count'}));
+}
+for(const kind of ['technology','body','porte','origin','channel','vehicleOrigin']){const rows=C.animationMixRows(real,kind);assert.equal(rows.reduce((s,r)=>s+(r.count??0),0),real.total);assert.doesNotThrow(()=>C.AnimationMix({frames:[real],frame:real,kind}));}
+assert.doesNotThrow(()=>C.AnimationBubbles({frames:[real],frame:real,dimension:'modelo',topN:20,trail:true}));
+console.log('PASS animations charts: stable keyed motion, real weighted-source frames, true-rank ties / MIT membership, fixed bubble scales / null bases / area / broken trails, complete independent mixes, metric-correct leadership, exact full tables, and reduced motion.');
+
+assert(css.includes('color:var(--text);background:var(--surface);border-radius:4px;padding:2px 4px;text-shadow:none'),'Stack labels use theme-tested surface/text pairing, not low-contrast white over arbitrary category colors');

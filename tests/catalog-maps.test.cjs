@@ -1,0 +1,45 @@
+const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),assert=require('node:assert/strict');
+const root=path.join(__dirname,'..'),source=fs.readFileSync(path.join(root,'src/catalog-maps.js'),'utf8');
+let slots=[],cursor=0;const jsx=(type,props,key)=>({type,props:props??{},key});
+const React={useMemo:fn=>fn(),useEffect:()=>{},useState:initial=>{const i=cursor++;if(!(i in slots))slots[i]=initial;return [slots[i],v=>slots[i]=typeof v==='function'?v(slots[i]):v];}};
+const html=fs.readFileSync(path.join(root,'index.html'),'utf8'),match=html.match(/const value\$3 = JSON.parse\(("(?:[^"\\]|\\.)*")\)/),geometry=JSON.parse(JSON.parse(match[1]));
+const context=vm.createContext({React,jsxRuntime:{jsx,jsxs:jsx},MarketTable:'table',value$3:geometry,Map,Set,Math,Number,String,Array});
+vm.runInContext(source+';globalThis.api={CATALOG_MAP_CHOICES,CATALOG_UF_TILES,catalogMapRows,catalogPathRings,catalogPathCentroid,catalogMunicipalJoin,catalogHexbin,catalogMapRadius,catalogMapHeight,catalogMapCuts,catalogMapClass,catalogMapProject,catalogProjectedPath,catalogMapProjectedBounds,catalogMapZoomBounds,catalogPopulationRows,CatalogMaps,catalogGeometryCache};',context);const a=context.api;
+assert.equal(a.CATALOG_MAP_CHOICES.length,7);assert(!a.CATALOG_MAP_CHOICES.some(v=>v.value==='flow'));
+assert.equal(new Set(a.CATALOG_UF_TILES.map(v=>v[0])).size,27);assert.deepEqual([...a.CATALOG_UF_TILES.map(v=>v[0])].sort(),geometry.features.map(f=>f.uf).sort());
+const model={total:30,complete:true,groups:{uf:[{name:'SP',count:30}],municipio:[{name:'São Paulo · SP',count:30}]},catalog:{market:{total:100,complete:true,groups:{uf:[{name:'SP',count:100}],municipio:[{name:'São Paulo · SP',count:100}]}},mitsubishi:{total:5,complete:true,groups:{uf:[{name:'SP',count:5}],municipio:[{name:'São Paulo · SP',count:5}]}}}};
+const row=a.catalogMapRows(model,'uf')[0];assert.equal(row.share,.3);assert.equal(row.mitShare,.05);
+assert.equal(a.catalogMapRows({...model,complete:false},'uf')[0].share,null);
+assert.equal(a.catalogMapRows({...model,catalog:{}},'uf')[0].mitShare,null);
+assert.equal(a.catalogMapRows({...model,total:null},'uf')[0].count,null);
+const square='M0,0 L10,0 L10,10 L0,10 Z';assert.deepEqual(Array.from(a.catalogPathCentroid(square)),[5,5]);assert.equal(a.catalogPathRings('M0,0 C1,2 3,4 5,6').length,0);
+const geo={uf:'SP',features:[{name:'São Paulo',code:'3550308',path:square}]};const joined=a.catalogMunicipalJoin([{name:'SAO PAULO · SP',count:30},{name:'Unknown · SP',count:7},{name:'SAO PAULO · MG',count:11}],geo);assert.equal(joined.matches.length,1);assert.equal(joined.unmatched.length,1);assert.equal(joined.matches[0].ibgeCode,'3550308');
+assert.equal(a.catalogMunicipalJoin([{name:'São Paulo · SP'}],{...geo,features:[...geo.features,...geo.features]}).matches.length,0,'Ambiguous names must not match');
+assert.equal(a.catalogMapRadius(25,100)**2/a.catalogMapRadius(100,100)**2,.25,'AREA encodes volume');assert.equal(a.catalogMapHeight(25,100,'linear'),27.5);assert(a.catalogMapHeight(25,100,'log')>27.5);assert.equal(a.catalogMapHeight(0,100,'log'),0);
+const points=[{name:'A',x:5,y:5,count:7,marketCount:10,mitCount:1},{name:'B',x:6,y:6,count:9,marketCount:20,mitCount:2},{name:'C',x:500,y:500,count:2,marketCount:3,mitCount:0}];for(const size of [12,24,40]){const bins=a.catalogHexbin(points,size);assert.equal(bins.reduce((s,b)=>s+b.count,0),18);assert.equal(bins.reduce((s,b)=>s+b.municipalities,0),3);assert.equal(bins.reduce((s,b)=>s+b.marketCount,0),33);}
+assert.equal(a.catalogHexbin([{name:'A',x:0,y:0,count:null}],24)[0].count,null);
+assert.equal(a.catalogMapClass(null,[10,20]),null);assert.equal(a.catalogMapClass(10,[10,20]),0);assert.equal(a.catalogMapClass(20,[10,20]),1);assert.equal(a.catalogMapClass(21,[10,20]),2);
+assert.notDeepEqual(Array.from(a.catalogMapProject(10,20,0,600,500,0,.6)),Array.from(a.catalogMapProject(10,20,0,600,500,90,.6)));assert(a.catalogProjectedPath(square,30,600,500,30,.6).endsWith(' Z'));
+function nodes(tree,result=[]){if(!tree||typeof tree!=='object')return result;result.push(tree);for(const child of [tree.props?.children].flat(Infinity))nodes(child,result);return result;}
+for(const choice of a.CATALOG_MAP_CHOICES){slots=[];cursor=0;slots[0]=choice.value;slots[2]='SP';const geoSP=JSON.parse(fs.readFileSync(path.join(root,'data/geography/SP.json'),'utf8'));slots[10]={data:geoSP,error:null,pending:false};const tree=a.CatalogMaps({model,filters:{},scope:[],dataBase:'https://example.com/data/'}),all=nodes(tree);assert(all.some(n=>n.type==='table'),'Every map has accessible table');assert(all.some(n=>n.props['aria-label']==='Visualização territorial'));assert(!JSON.stringify(tree).includes('NaN'),'No invalid geometry '+choice.value);}
+for(const uf of geometry.features){assert(a.catalogPathCentroid(uf.path)?.every(Number.isFinite),'Official UF centroid '+uf.uf);}
+console.log('catalog maps: 7 modes, exact coverage, geometry joins, area/height encodings, bins and accessible data pass');
+
+const withPrior={...model,catalog:{...model.catalog,prior:{total:30,complete:true,groups:{uf:[{name:'SP',count:20},{name:'RJ',count:10}]}}}};
+assert.equal(a.catalogMapRows(withPrior,'uf').find(r=>r.name==='SP').growth,.5);
+assert.equal(a.catalogMapRows(withPrior,'uf').find(r=>r.name==='RJ').growth,-1);
+assert.equal(a.catalogMapRows({...withPrior,complete:false},'uf')[0].growth,null);
+assert.equal(a.catalogMapRows({...withPrior,catalog:{...withPrior.catalog,prior:{...withPrior.catalog.prior,complete:false}}},'uf')[0].growth,null);
+assert.equal(a.catalogHexbin([{name:'unknown',x:0,y:0,count:3,marketCount:null,mitCount:null}],24)[0].marketCount,null);
+slots=[];cursor=0;const selectedTree=a.CatalogMaps({model,filters:{uf:['SP']},scope:[],dataBase:'https://example.com/data/'});const selectedRows=nodes(selectedTree).find(n=>n.type==='table').props.rows;assert.equal(selectedRows.find(r=>r.name==='RJ').count,null);
+assert(source.includes("value:'per1000',children:"));
+
+for(const angle of [-180,-90,0,90,180])for(const tilt of [.25,1]){const bounds=a.catalogMapProjectedBounds(geometry.features,[],630,565,angle,tilt);for(const f of geometry.features)for(const ring of a.catalogPathRings(f.path))for(const point of ring)for(const z of [0,110]){const p=a.catalogMapProject(...point,z,630,565,angle,tilt);assert(p[0]>=bounds[0]&&p[0]<=bounds[0]+bounds[2]&&p[1]>=bounds[1]&&p[1]<=bounds[1]+bounds[3],'Projected geometry and maximum height fully inside default bounds');}}
+assert.equal(a.catalogMapZoomBounds([0,0,100,100],2)[2],50);
+for(const kind of ['spikes','extrusion']){slots=[];cursor=0;slots[0]=kind;const tree=a.CatalogMaps({model,filters:{},scope:[],dataBase:'https://example.com/data/'}),all=nodes(tree);assert(all.some(n=>n.props['aria-label']==='Zoom do mapa 3D'));assert(all.some(n=>n.type==='button'&&n.props.children==='Repor câmera · enquadrar tudo'));}
+
+const population=JSON.parse(fs.readFileSync(path.join(root,'data/geography/catalog-population.json'),'utf8'));assert.equal(population.municipalities.length,5571);assert.equal(population.states.reduce((s,r)=>s+r.population2026,0),214211951);assert.equal(population.states.length,27);assert(!JSON.stringify(population).includes('registrations'));
+const spPop=population.states.find(r=>r.name==='SP');const rated=a.catalogPopulationRows([{name:'SP',count:30}],population,'uf')[0];assert.equal(rated.per1000,30/spPop.population2026*1000);assert.equal(a.catalogPopulationRows([{name:'SP',count:30}],population,'uf',false)[0].per1000,null);assert.equal(a.catalogPopulationRows([{name:'MT',count:30}],population,'uf')[0].per1000,30/population.states.find(r=>r.name==='MT').population2026*1000);assert.equal(a.catalogPopulationRows([{ibgeCode:'5101837',count:30}],population,'municipio')[0].per1000,null);assert.equal(a.catalogPopulationRows([{name:'missing',count:30}],population,'uf')[0].per1000,null);assert.equal(a.catalogPopulationRows([{name:'SP',count:30,inScope:false}],population,'uf')[0].per1000,null);
+
+const crypto=require('node:crypto'),sourcePopulationBytes=fs.readFileSync(path.join(root,'data/scenarios/socioeconomic.json')),sourcePopulation=JSON.parse(sourcePopulationBytes);assert.equal(population.sourceSha256,crypto.createHash('sha256').update(sourcePopulationBytes).digest('hex'));for(const uf of population.states){const expected=sourcePopulation.rows.filter(r=>r.uf===uf.name).reduce((sum,r)=>sum+r.population,0);assert.equal(uf.population2026,expected,'Population denominator includes every municipality in '+uf.name);}for(const r of population.municipalities){const original=sourcePopulation.rows.find(x=>x.code===r.code);assert.equal(r.population,original.population);assert.equal(r.populationYear,2026);}
+const before=fs.readFileSync(path.join(root,'data/geography/catalog-population.json'));require('node:child_process').execFileSync('python',['scripts/build_catalog_population.py'],{cwd:root});assert.equal(Buffer.compare(before,fs.readFileSync(path.join(root,'data/geography/catalog-population.json'))),0,'Derived population asset builds byte-for-byte reproducibly');
