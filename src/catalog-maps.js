@@ -33,10 +33,18 @@ function catalogPathCentroid(path){
  for(const ring of rings){let twice=0,cx=0,cy=0;for(let i=0;i<ring.length;i++){const p=ring[i],q=ring[(i+1)%ring.length],cross=p[0]*q[1]-q[0]*p[1];twice+=cross;cx+=(p[0]+q[0])*cross;cy+=(p[1]+q[1])*cross;}if(Math.abs(twice)>1e-8){const weight=Math.abs(twice);area+=weight;x+=cx/(3*twice)*weight;y+=cy/(3*twice)*weight;}}
  return area?[x/area,y/area]:null;
 }
+// Geometry assets are immutable. Cache name matching and projected centroids per
+// geometry identity, so metric/period changes do not parse thousands of paths.
+const catalogMunicipalGeometryIndex=new WeakMap();
+function catalogMunicipalIndex(geometry){
+ if(!geometry)return new Map();
+ if(catalogMunicipalGeometryIndex.has(geometry))return catalogMunicipalGeometryIndex.get(geometry);
+ const names=new Map();for(const f of geometry.features??[]){const key=catalogMapNormalize(f.name);names.set(key,names.has(key)?null:{feature:f,point:catalogPathCentroid(f.path)});}
+ catalogMunicipalGeometryIndex.set(geometry,names);return names;
+}
 function catalogMunicipalJoin(rows,geometry){
- const names=new Map();for(const f of geometry?.features??[]){const key=catalogMapNormalize(f.name);names.set(key,names.has(key)?null:f);}
- const matches=[],unmatched=[];
- for(const row of rows){if(!row.name.endsWith(' · '+geometry?.uf))continue;const name=row.name.slice(0,-(' · '+geometry.uf).length),f=names.get(catalogMapNormalize(name)),point=f&&catalogPathCentroid(f.path);
+ const names=catalogMunicipalIndex(geometry); const matches=[],unmatched=[];
+ for(const row of rows){if(!row.name.endsWith(' · '+geometry?.uf))continue;const name=row.name.slice(0,-(' · '+geometry.uf).length),entry=names.get(catalogMapNormalize(name)),f=entry?.feature,point=entry?.point;
   if(f&&point)matches.push({...row,ibgeCode:f.code,municipality:f.name,uf:geometry.uf,x:point[0],y:point[1],path:f.path,geographicMatch:'Nome normalizado + UF únicos'});
   else unmatched.push({...row,ibgeCode:null,uf:geometry.uf,geographicMatch:'Sem correspondência única'});
  }
@@ -66,10 +74,16 @@ function catalogMapProjectedBounds(features,rows,width,height,angle,tilt,maximum
 function catalogMapZoomBounds(bounds,zoom){const [x,y,w,h]=bounds;return [x+w/2-w/(2*zoom),y+h/2-h/(2*zoom),w/zoom,h/zoom];}
 const catalogGeometryCache=new Map();
 function useCatalogMunicipalGeometry(uf,base,enabled){
- const [state,setState]=React.useState({data:null,error:null,pending:false}),[attempt,setAttempt]=React.useState(0);
- React.useEffect(()=>{if(!enabled||!uf){setState({data:null,error:null,pending:false});return;}const key=base+'|'+uf;if(catalogGeometryCache.has(key)){setState({data:catalogGeometryCache.get(key),error:null,pending:false});return;}let active=true;const controller=new AbortController();setState({data:null,error:null,pending:true});
- fetch(new URL('geography/'+encodeURIComponent(uf)+'.json',base),{signal:controller.signal,credentials:'same-origin',redirect:'error'}).then(r=>{if(!r.ok)throw Error('Malha municipal indisponível. A tabela continua disponível.');return r.json();}).then(data=>{if(data.uf!==uf||!Array.isArray(data.features))throw Error('Malha municipal incompatível.');catalogGeometryCache.set(key,data);if(active)setState({data,error:null,pending:false});}).catch(error=>{if(active&&error.name!=='AbortError')setState({data:null,error:error.message,pending:false});});return()=>{active=false;controller.abort();};
- },[uf,base,enabled,attempt]);return {...state,data:state.data?.uf===uf?state.data:null,retry:()=>setAttempt(n=>n+1)};
+ const key=base+'|'+uf;
+ const [state,setState]=React.useState({key:null,data:null,error:null,pending:false}),[attempt,setAttempt]=React.useState(0);
+ React.useEffect(()=>{if(!enabled||!uf){setState({key,data:null,error:null,pending:false});return;}if(catalogGeometryCache.has(key)){setState({key,data:catalogGeometryCache.get(key),error:null,pending:false});return;}let active=true;const controller=new AbortController();setState({key,data:null,error:null,pending:true});
+ fetch(new URL('geography/'+encodeURIComponent(uf)+'.json',base),{signal:controller.signal,credentials:'same-origin',redirect:'error'}).then(r=>{if(!r.ok)throw Error('Malha municipal indisponível. A tabela continua disponível.');return r.json();}).then(data=>{if(data.uf!==uf||!Array.isArray(data.features))throw Error('Malha municipal incompatível.');catalogGeometryCache.set(key,data);if(active)setState({key,data,error:null,pending:false});}).catch(error=>{if(active&&error.name!=='AbortError')setState({key,data:null,error:error.message,pending:false});});return()=>{active=false;controller.abort();};
+ },[uf,base,enabled,attempt]);
+ // A cached return to a UF is immediate; never expose the previous base/UF's
+ // geometry or error for the render before the effect cleans up its request.
+ const cached=enabled&&uf?catalogGeometryCache.get(key):null;
+ const current=enabled&&uf&&state.key===key?state:{data:null,error:null,pending:Boolean(enabled&&uf)};
+ return {...current,data:cached??(current.data?.uf===uf?current.data:null),pending:cached?false:current.pending,error:cached?null:current.error,retry:()=>setAttempt(n=>n+1)};
 }
 function catalogPopulationRows(rows,population,dimension,complete=true){
  const index=new Map(((dimension==='uf'?population?.states:population?.municipalities)??[]).map(r=>[dimension==='uf'?r.name:r.code,r]));

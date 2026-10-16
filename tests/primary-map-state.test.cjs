@@ -1,6 +1,6 @@
 const assert=require('node:assert/strict');
 const {primaryMapReadState,primaryMapStateURL}=require('../src/primary-map-state.js');
-const context={values:{uf:'DF',municipio:'BRASILIA · DF',date:'2026-09-01..2026-09-30',marca:'MITSUBISHI'},pending:[]};
+const context={values:{uf:'DF',municipio:'BRASILIA',date:'2026-09-01..2026-09-30',marca:'MITSUBISHI'},pending:[]};
 const view={metric:'per1000',showDealers:false,detail:'BRASILIA · DF'};
 const url=new URL(primaryMapStateURL('https://example.test/?tab=geography&f.date=2026-09&f.marca=FIAT#kept','geography',view,context));
 assert.equal(url.hash,'#kept');assert.equal(url.searchParams.get('f.marca'),'FIAT');assert.equal(url.searchParams.get('tab'),'geography');

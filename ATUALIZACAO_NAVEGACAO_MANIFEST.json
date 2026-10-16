@@ -1,0 +1,172 @@
+{
+  "baseCommit": "94084227b19bcd2317b86971955f05a2a6ef4c7d",
+  "purpose": "Incremental map, evolution, competition and compatible catalog-control fixes",
+  "validation": {
+    "nodeTests": 139,
+    "pythonTests": 104,
+    "browserVisualVerified": false,
+    "salvadorJanSep2026SourceAndCharts": 29320
+  },
+  "files": [
+    {
+      "path": "AJUSTES_MAPA_EVOLUCAO_CONCORRENCIA.md",
+      "bytes": 3514,
+      "sha256": "68c65bfab8b311e889ee111bbdaebb4afcbf8675ab36a9b3faa42407b8ef01f6"
+    },
+    {
+      "path": "_headers",
+      "bytes": 877,
+      "sha256": "fd49cacf8937756063db5656d12a81c1753c38cb4993848edca5a61bb0107492"
+    },
+    {
+      "path": "index.html",
+      "bytes": 6286816,
+      "sha256": "f9ce993a283710d23b1602f2e6aa9f6ba840f41f8fddfb8fc37ed0ed534fdfb9"
+    },
+    {
+      "path": "scripts/build-catalog.py",
+      "bytes": 2444,
+      "sha256": "491de649da68b6f89850189ee9eeaf729e38035eb36fbe9b55bc2981580c5a6a"
+    },
+    {
+      "path": "scripts/build-competition-fixes.py",
+      "bytes": 2525,
+      "sha256": "ddf631eb20219d2c338e0e62479bcee4e4949c6a4f81045a966a5ae9e64b5822"
+    },
+    {
+      "path": "scripts/build-evolution.py",
+      "bytes": 984,
+      "sha256": "b58001ebc1fb669102796edc1691175aa2e8e22248e4d928b94b83340e22fc17"
+    },
+    {
+      "path": "scripts/build-megapackage.py",
+      "bytes": 458,
+      "sha256": "a1966ab7c48c03c69efcf76ffaf38f035f34e9205cf644e2b5661d16a66d9b06"
+    },
+    {
+      "path": "scripts/build-municipal-fixes.py",
+      "bytes": 3284,
+      "sha256": "9e1a1d2b25e5975bf54bde433618e24d721a542fc50dc66b86b39ab534656e82"
+    },
+    {
+      "path": "src/catalog-charts.js",
+      "bytes": 23127,
+      "sha256": "3f0de6fec12b32f07166f549aebcc38ded8ee8908e122b69097a4737ab356f5e"
+    },
+    {
+      "path": "src/catalog-maps.js",
+      "bytes": 31271,
+      "sha256": "4319f418f24c4db7a57c58efaeade2ba43ef1c13410df03db2c1a4e416acf5da"
+    },
+    {
+      "path": "src/catalog-workspace.css",
+      "bytes": 4220,
+      "sha256": "ed9eb7ef89bda57971b29cce07b59b45d0200d86f7dc245545cee6ba6461e743"
+    },
+    {
+      "path": "src/catalog-workspace.js",
+      "bytes": 18053,
+      "sha256": "c095c2ce733a11b7b1a2b1ba2bec23e0a52ae53ac7447dbab08b9c07c402ca64"
+    },
+    {
+      "path": "src/competition-fixes.css",
+      "bytes": 504,
+      "sha256": "721891179066f1e681a20d657e755ef3be2d7e973382f4ae141b5f7fd8f27a40"
+    },
+    {
+      "path": "src/evolution-brush.js",
+      "bytes": 11273,
+      "sha256": "cb583cf134c7f8ce430fc9a7e8919065fa96c395c79848150201553bc046f938"
+    },
+    {
+      "path": "src/evolution-views.css",
+      "bytes": 2422,
+      "sha256": "c34293cdf91403b9f47cf706d2ee333fe704bee308bb3ceeec95551b813f9c3a"
+    },
+    {
+      "path": "src/evolution-views.js",
+      "bytes": 12056,
+      "sha256": "50887a79b539b6791bec971fed1531ad647ff047e35f01631988c0a7a5371820"
+    },
+    {
+      "path": "src/evolution-years.js",
+      "bytes": 12218,
+      "sha256": "38770a7c6998807ee75edf9a7daf15d13240d130099fbc172e0967ed98e79019"
+    },
+    {
+      "path": "src/primary-map-state.js",
+      "bytes": 3193,
+      "sha256": "60e63144a1efb91bc3c6d356a72f33a62cfe63746aae1e4107d8c36ed78cefef"
+    },
+    {
+      "path": "src/primary-map.css",
+      "bytes": 8054,
+      "sha256": "4b9404eb238e66c14657713a918196593e1008a9cdb39d758a275ccb3f850610"
+    },
+    {
+      "path": "src/primary-map.js",
+      "bytes": 20946,
+      "sha256": "92f920bd99b6cbac274680f4ee3ad32570bc55a724079b65dfc80fbfc66938de"
+    },
+    {
+      "path": "tests/catalog-controls.test.cjs",
+      "bytes": 4863,
+      "sha256": "0158d666dbb74615c8349392bef5f7447ca96444834aa8b6d68fad4e2a862ff2"
+    },
+    {
+      "path": "tests/evolution-notes-layout.test.cjs",
+      "bytes": 2300,
+      "sha256": "cc9751eeec150cec189141e1dc04c4901d13ec96e77732f6d5c4c4eb69cab179"
+    },
+    {
+      "path": "tests/evolution-years-period.test.cjs",
+      "bytes": 5622,
+      "sha256": "74f00cbeae4990fc0ba589c42bc7396f0e94b0b8f87b3d6b6d2b14d30728142e"
+    },
+    {
+      "path": "tests/map-navigation-fluidity.test.cjs",
+      "bytes": 4415,
+      "sha256": "bd69028cd3bee523afcf843c40793e9f5a875ef10c292d224be1bf4ba33fed47"
+    },
+    {
+      "path": "tests/municipal-filter-regression.test.cjs",
+      "bytes": 4051,
+      "sha256": "1f35ab6e5562bfc487653e4a32853dc03109e56ee70b472a00749b74453a44e7"
+    },
+    {
+      "path": "tests/municipal-navigation-loading.test.cjs",
+      "bytes": 2916,
+      "sha256": "764e6da2f6138c4fa3d62326a7f4692150f564308f7877404c5289add6f7053e"
+    },
+    {
+      "path": "tests/navigation.test.cjs",
+      "bytes": 4803,
+      "sha256": "26235bbae5c6f40a0e4730e93c22343159369bc13350ee3cb6a775e68595bce9"
+    },
+    {
+      "path": "tests/primary-map-state.test.cjs",
+      "bytes": 1612,
+      "sha256": "330c4a6143ceba81010602e07cde514d74352fd0462249f01e71daf77aeacbb5"
+    },
+    {
+      "path": "tests/primary-map-table-layout.test.cjs",
+      "bytes": 3688,
+      "sha256": "ff31bfb59f3574455b5f6df10adc3956411501d2605499d3a15debdbea5acd97"
+    },
+    {
+      "path": "tests/primary-map.test.cjs",
+      "bytes": 15083,
+      "sha256": "ecca3bd887a9ba42a3058627174773ba475fca373185257fc55e5898ebf26cc7"
+    },
+    {
+      "path": "tests/territory-channels.test.cjs",
+      "bytes": 18999,
+      "sha256": "2b052f43f22c81f41a250cf514691bf30952e554d3db40202f864bac7c0e02ee"
+    },
+    {
+      "path": "tests/test_competition_fixes.py",
+      "bytes": 2468,
+      "sha256": "83d8823912fb409d923ba1a1c70570f3bc84972d45ec3544be16dc6592acec8d"
+    }
+  ]
+}

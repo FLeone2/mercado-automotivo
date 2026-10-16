@@ -4,3 +4,11 @@
 /* Section is a grid: keep this chart-mode control compact instead of stretching. */
 .ev-composition-mode.data-segmented-control{justify-self:start;width:fit-content;max-width:100%;box-sizing:border-box;overflow-x:auto}
 .ev-composition-mode.data-segmented-control button{flex:0 0 auto}
+
+/* Chart descriptions render as React-owned siblings. Give every Evolution chart
+   and its following note a full row, rather than letting prose occupy column 2.
+   This also keeps the complete chart width when the notes portal is not mounted. */
+.ev-history-view{min-width:0;max-width:100%}
+.ev-history-view .data-section{grid-template-columns:minmax(0,1fr)}
+.ev-history-view .data-section>*{grid-column:1/-1;min-width:0;max-width:100%}
+.ev-history-view .data-section>.am-footnote{margin-block:0 8px;overflow-wrap:anywhere}

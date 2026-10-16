@@ -52,7 +52,7 @@ city(tree).props.onClick();tree=render();assert.equal(changes.length,0,'City cli
 assert(button(tree,'Filtrar por este município'));assert(text(tree).includes('Detalhes fixados'));
 const other=nodes(tree).find(n=>n.props.className==='pm-city'&&!n.props['aria-pressed']);other.props.onMouseEnter();tree=render();assert.equal(view.detail,'São Paulo · SP');assert.equal(city(tree).props['aria-pressed'],true,'Hover preserves pinned city');
 other.props.onFocus();tree=render();assert.equal(view.detail,'São Paulo · SP');assert.equal(changes.length,0,'Hover/focus never filters');
-button(tree,'Filtrar por este município').props.onClick();assert.deepEqual(changes,[['municipio','São Paulo · SP']]);
+button(tree,'Filtrar por este município').props.onClick();assert.deepEqual(changes,[['municipio','São Paulo']]);
 let prevented=false;city(tree).props.onKeyDown({key:'Escape',preventDefault(){}});tree=render();assert.equal(view.detail,null);assert(!button(tree,'Filtrar por este município'));
 city(tree).props.onKeyDown({key:' ',preventDefault(){prevented=true;}});tree=render();assert(prevented);assert.equal(view.detail,'São Paulo · SP');assert.equal(changes.length,1);
 button(tree,'Fechar detalhes').props.onClick();tree=render();assert.equal(view.detail,null);
@@ -94,6 +94,15 @@ async function actual(filters){const messages=[],port={postMessage:m=>messages.p
  props.model=real;props.filters=filters;view.metric='per1000';view.detail=null;tree=render();
  for(const row of table(tree).props.rows){const pop=population.states.find(r=>r.name===row.name);assert.equal(row.population2026,pop.population2026);assert.equal(row.per1000,row.count/pop.population2026*1000);}
  assert.equal(table(tree).props.rows.reduce((s,r)=>s+r.population2026,0),214211951);
+ // Actual geometry calls Salvador a title-case display name; source filter remains SALVADOR.
+ props.model=real;props.filters={...filters,uf:'BA'};view.detail=null;view.metric='count';tree=render();
+ const salvador=table(tree).props.rows.find(r=>r.name==='SALVADOR · BA');assert(salvador&&salvador.count>0);
+ assert.equal(salvador.municipality,'Salvador');const beforeSalvador=changes.length;
+ table(tree).props.onSelect(salvador);tree=render();assert.equal(changes.length,beforeSalvador,'Inspecting Salvador does not filter');
+ button(tree,'Filtrar por este município').props.onClick();assert.deepEqual(changes.at(-1),['municipio','SALVADOR']);
+ const selected=await actual({...filters,uf:'BA',municipio:changes.at(-1)[1]});
+ assert.equal(selected.total,salvador.count);assert.equal(selected.daily.reduce((s,r)=>s+r.count,0),salvador.count);
+ props.filters=filters;view.detail=null;
  const mit=await actual({...filters,marca:'MITSUBISHI'});assert.equal(mit.total,1729);const mitRows=api.primaryMapRows(mit,'uf',authoredApi.mapAnalysis(mit,filters));for(const row of mitRows){if(row.marketCount>0)assert.equal(row.share,row.count/row.marketCount);}
  props.model=mit;tree=render();assert.equal(table(tree).props.rows.reduce((s,r)=>s+r.population2026,0),214211951,'Brand filter never restricts population denominator');
  const vdFilters={...filters,tipo_venda:'VD'};const vd=await actual(vdFilters),vdAnalysis=authoredApi.mapAnalysis(vd,vdFilters);assert(vdAnalysis.canShare);const vdRows=api.primaryMapRows(vd,'uf',vdAnalysis);for(const row of vdRows){if(row.denominator>0)assert.equal(row.channelShare,row.count/row.denominator);}

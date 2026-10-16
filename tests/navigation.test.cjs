@@ -37,4 +37,4 @@ assert(html.includes(source.trim()));
 console.log('PASS: eight top-level areas; every old/new route and secondary link; consistent subnav without breadcrumbs; legacy pyramid favorite location; unchanged worker/data/component identities; frozen scenarios; footer and non-clipping responsive glass.');
 
 // Approved shared primary map replaces the separate municipal map section.
-assert(html.includes("id:'territories-primary-map'"));assert(html.includes("jsxRuntime.jsx(PrimaryMap, { id:'overview-map'"));
+assert(html.includes("id:'territories-primary-map'"));assert(html.includes("{id:'overview-map'}"));assert(html.includes("['independent-primary-map',tab"));

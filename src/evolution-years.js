@@ -1,6 +1,24 @@
 // Annual presentation consumes reviewed worker aggregates; it never synthesizes observations.
 const EV_YEAR_MONTHS=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-function evolutionYearFilters(filters,allHistory){return allHistory?{...filters,date:'all'}:{...filters};}
+// Use source coverage, never the last observed registration (a covered day can be zero).
+function evolutionYearPlan(filters,manifest,chosen=null){
+ const months=(manifest?.months??[]).filter(m=>m.cubePath&&/^\d{4}-\d{2}$/.test(m.month??'')).sort((a,b)=>a.month.localeCompare(b.month));
+ if(!months.length)return null;
+ const last=months.at(-1),declared=last.coverageEndDate??last.coverageEnd??last.coverageThrough??last.partialCoverage?.end;
+ const sourceEnd=typeof declared==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(declared)?declared:evolutionYearEnd(last.month);
+ const date=String(filters.date??'all'),rawEnd=date==='all'?sourceEnd:date.split('..').at(-1);
+ const requestedEnd=/^\d{4}-\d{2}$/.test(rawEnd)?evolutionYearEnd(rawEnd):/^\d{4}$/.test(rawEnd)?rawEnd+'-12-31':/^\d{4}-\d{2}-\d{2}$/.test(rawEnd)?rawEnd:sourceEnd;
+ const end=requestedEnd<sourceEnd?requestedEnd:sourceEnd,anchor=end.slice(0,4);
+ const years=[...new Set(months.filter(m=>m.month<=end.slice(0,7)).map(m=>m.month.slice(0,4)))];
+ const selected=chosen===null?years.filter(y=>Number(y)>=Number(anchor)-2):years.filter(y=>chosen.includes(y));
+ const start=(selected[0]??anchor)+'-01-01',selectedEnd=selected.length&&selected.at(-1)<anchor?selected.at(-1)+'-12-31':end;
+ return {years,selected,start,end:selectedEnd,date:start+'..'+selectedEnd};
+}
+function evolutionYearFilters(filters,allHistory,manifest,chosen=null){
+ if(allHistory)return {...filters,date:'all'};
+ const plan=evolutionYearPlan(filters,manifest,chosen);
+ return plan?{...filters,date:plan.date}:{...filters};
+}
 function evolutionYearEnd(month){return month+'-'+String(new Date(Date.UTC(Number(month.slice(0,4)),Number(month.slice(5,7)),0)).getUTCDate()).padStart(2,'0');}
 function evolutionYearRows(snapshot){
  const coverage=new Map((snapshot?.coverage??[]).map(r=>[r.month,r]));
@@ -25,21 +43,23 @@ function evolutionYearCommon(rows,years){
 }
 function evolutionYearPath(rows,x,y){let previous=-2;return rows.map(r=>{if(r.count===null){previous=-2;return '';}const command=r.monthIndex===previous+1?'L':'M';previous=r.monthIndex;return command+x(r.monthIndex)+' '+y(r.count);}).filter(Boolean).join(' ');}
 function evolutionYearColor(year,focus,soleMit){return year===focus?(soleMit?'#d71920':'var(--chart-1)'):'var(--muted-text, #77879b)';}
-function EvolutionYears({filters={},scope=[]}){
+function EvolutionYears({filters={},scope=[],manifest:providedManifest}){
  const [allHistory,setAllHistory]=React.useState(false),[chosen,setChosen]=React.useState(null),[focused,setFocused]=React.useState(null);
- const queryFilters=React.useMemo(()=>evolutionYearFilters(filters,allHistory),[filters,allHistory]);
- const operation=useMarketData(queryFilters,true,'interactive',false),snapshot=operation.result?.interactive;
- const rows=React.useMemo(()=>evolutionYearRows(snapshot),[snapshot]),selection=evolutionYearSelection(rows,chosen),years=selection.years,selected=selection.selected,focus=evolutionYearFocus(selected,focused);
+ const shell=typeof dataApp==='undefined'?null:dataApp.useDataApp(),manifest=providedManifest??shell?.snapshot?.marketManifest;
+ const plan=evolutionYearPlan(allHistory?{...filters,date:'all'}:filters,manifest,chosen);
+ const queryFilters=React.useMemo(()=>evolutionYearFilters(filters,allHistory,manifest,chosen),[filters,allHistory,manifest,chosen]);
+ const operation=useMarketData(queryFilters,!plan||plan.selected.length>0,'interactive',false),snapshot=operation.result?.interactive;
+ const rows=React.useMemo(()=>evolutionYearRows(snapshot),[snapshot]),selection=evolutionYearSelection(rows,chosen),years=plan?.years??selection.years,selected=allHistory?(chosen??years):plan?.selected??selection.selected,focus=evolutionYearFocus(selected,focused);
  const visible=rows.filter(r=>selected.includes(r.year)),common=evolutionYearCommon(visible,selected),brands=snapshot?.groups?.marca??[],soleMit=brands.length===1&&brands[0].name==='MITSUBISHI';
  const max=Math.max(1,...visible.map(r=>r.count??0)),x=i=>64+i*65,y=n=>284-n/max*240;
- const effectiveScope=[...(allHistory?scope.filter(s=>s.field!=='date'):scope),...(allHistory?[{field:'date',label:'Período',value:'Todo o histórico disponível'}]:[]),{field:'years',label:'Anos exibidos',value:selected.join(', ')},{field:'focusYear',label:'Ano em foco',value:focus??''}];
+ const effectiveScope=[...scope.filter(s=>s.field!=='date'),{field:'date',label:'Período da comparação',value:allHistory?'Todo o histórico disponível':queryFilters.date},{field:'years',label:'Anos exibidos',value:selected.join(', ')},{field:'focusYear',label:'Ano em foco',value:focus??''}];
  const audit=visible.map(r=>({date:r.date,year:r.year,month:EV_YEAR_MONTHS[r.monthIndex],count:r.count,coverage:r.coverageLabel,commonMonth:common.months.includes(r.monthIndex)?'Sim':'Não'}));
  return jsxRuntime.jsxs('section',{className:'ev-years','aria-label':'Comparação entre anos',children:[
-  jsxRuntime.jsxs('label',{className:'ev-years-history',children:[jsxRuntime.jsx('input',{type:'checkbox',checked:allHistory,onChange:e=>setAllHistory(e.target.checked)}),'Comparar todo o histórico (mantém os demais filtros)']}),
-  jsxRuntime.jsx('p',{className:'am-footnote',children:'Volume mensal do recorte filtrado, incluindo marca. Janeiro a dezembro no mesmo eixo. Linhas interrompidas indicam ausência de cobertura; meses futuros não são estimados.'}),
-  operation.pending?jsxRuntime.jsx('p',{role:'status',children:'Carregando comparação entre anos…'}):operation.error?jsxRuntime.jsx('p',{role:'alert',children:'Não foi possível carregar a comparação. '+operation.error}):!snapshot?jsxRuntime.jsx('p',{role:'status',children:'Comparação indisponível para este recorte.'}):jsxRuntime.jsxs(jsxRuntime.Fragment,{children:[
-   jsxRuntime.jsxs('fieldset',{className:'ev-years-picker',children:[jsxRuntime.jsx('legend',{children:'Anos visíveis'}),...years.map(year=>jsxRuntime.jsxs('label',{children:[jsxRuntime.jsx('input',{type:'checkbox',checked:selected.includes(year),onChange:e=>setChosen(e.target.checked?[...selected,year].sort():selected.filter(y=>y!==year))}),year]},year)),jsxRuntime.jsx('button',{type:'button',className:'am-small-button',onClick:()=>{setChosen(null);setFocused(null);},children:'Últimos 3 anos'})]}),
-   !selected.length?jsxRuntime.jsx('p',{role:'status',children:'Selecione pelo menos um ano para comparar.'}):jsxRuntime.jsxs(jsxRuntime.Fragment,{children:[
+  jsxRuntime.jsxs('label',{className:'ev-years-history',children:[jsxRuntime.jsx('input',{type:'checkbox',checked:allHistory,onChange:e=>{setAllHistory(e.target.checked);setChosen(null);setFocused(null);}}),'Comparar todo o histórico (mantém os demais filtros)']}),
+  jsxRuntime.jsx('p',{className:'am-footnote',children:allHistory?'Todo o histórico disponível, mantendo marca e todos os demais filtros. Meses futuros não são estimados.':'Os anos disponíveis vêm da cobertura da fonte. O período é ampliado para os anos escolhidos, mantendo marca e todos os demais filtros. O fim do período global e a cobertura da fonte limitam o último ano. Linhas interrompidas indicam ausência de cobertura; meses futuros não são estimados.'}),
+  jsxRuntime.jsxs('fieldset',{className:'ev-years-picker',children:[jsxRuntime.jsx('legend',{children:'Anos visíveis'}),...years.map(year=>jsxRuntime.jsxs('label',{children:[jsxRuntime.jsx('input',{type:'checkbox',checked:selected.includes(year),onChange:e=>{setAllHistory(false);setChosen(e.target.checked?[...selected,year].sort():selected.filter(y=>y!==year));}}),year]},year)),jsxRuntime.jsx('button',{type:'button',className:'am-small-button',onClick:()=>{setAllHistory(false);setChosen(null);setFocused(null);},children:'Últimos 3 anos'})]}),
+  !selected.length&&(plan||chosen!==null)?jsxRuntime.jsx('p',{role:'status',children:'Selecione pelo menos um ano para comparar.'}):operation.pending?jsxRuntime.jsx('p',{role:'status',children:'Carregando comparação entre anos…'}):operation.error?jsxRuntime.jsx('p',{role:'alert',children:'Não foi possível carregar a comparação. '+operation.error}):!snapshot?jsxRuntime.jsx('p',{role:'status',children:'Comparação indisponível para este recorte.'}):jsxRuntime.jsxs(jsxRuntime.Fragment,{children:[
+   jsxRuntime.jsxs(jsxRuntime.Fragment,{children:[
     jsxRuntime.jsxs('div',{className:'ev-years-legend','aria-label':'Ano em foco',children:[jsxRuntime.jsx('span',{children:'Destacar ano:'}),...selected.map(year=>jsxRuntime.jsxs('button',{type:'button','aria-pressed':focus===year,onClick:()=>setFocused(year),style:{'--year-color':evolutionYearColor(year,focus,soleMit)},children:[jsxRuntime.jsx('i',{'aria-hidden':true}),year,focus===year?' · em foco':'']},year))]}),
     jsxRuntime.jsx('div',{className:'ev-years-scroll',tabIndex:0,role:'region','aria-label':'Gráfico anual. Role horizontalmente em telas pequenas; valores exatos na tabela abaixo.',children:jsxRuntime.jsxs('svg',{viewBox:'0 0 820 332',className:'ev-years-chart',role:'img','aria-label':'Volumes mensais por ano; destaque '+focus,children:[
      jsxRuntime.jsx('desc',{children:'Cada linha é um ano. Meses ausentes interrompem a linha. Um círculo maior marca o último mês observado de cada ano. Consulte a tabela para os valores exatos e a cobertura.'}),

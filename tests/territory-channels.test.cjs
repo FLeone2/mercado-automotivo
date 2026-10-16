@@ -9,7 +9,8 @@ assert.equal(embeddedWorker, workerSource, 'The published worker must match its 
 assert(html.includes('// BEGIN TERRITORY CHANNELS\n' + publishedSource), 'Published component must match its maintained source');
 assert(html.includes(fs.readFileSync(path.join(root, 'src/territory-channels.css'), 'utf8')));
 assert(html.indexOf('jsxRuntime.jsx(TerritoryChannelMap, { model, filters, scope,') > html.indexOf('id: "geo-uf-ranking"'));
-assert(html.includes("jsxRuntime.jsx(PrimaryMap, { id:'territories-primary-map'"));
+assert(html.includes("{id:'territories-primary-map'}"));
+assert(html.includes("['independent-primary-map',tab"));
 assert(html.indexOf('jsxRuntime.jsx(TerritoryChannelMap, { model, filters, scope,') < html.indexOf('id: "geo-municipal-heading"')); 
 
 let slots = [], cursor = 0;
