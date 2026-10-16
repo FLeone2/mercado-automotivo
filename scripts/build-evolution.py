@@ -11,7 +11,7 @@ def worker(m):
  global found
  if 'installMarketWorker' not in json.loads(m[1]):return m[0]
  found+=1
- return 'new Blob(['+json.dumps((root/'src/evolution-market-worker.js').read_text(),ensure_ascii=False)
+ return 'new Blob(['+json.dumps((root/'src/performance-cache.js').read_text()+'\n'+(root/'src/evolution-market-worker.js').read_text(),ensure_ascii=False)
 html=re.sub(r'new Blob\(\[("(?:[^"\\]|\\.)*")',worker,html)
 assert found==1
 p.write_text(html)
